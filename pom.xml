@@ -3,7 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <build>
         <plugins>
             <plugin>
@@ -28,11 +27,9 @@
             </plugin>
         </plugins>
     </build>
-
     <groupId>IwM3</groupId>
     <artifactId>IwM3</artifactId>
     <version>1.0-SNAPSHOT</version>
-
     <dependencies>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -64,8 +61,5 @@
             <artifactId>hapi-fhir-structures-dstu2</artifactId>
             <version>3.3.0</version>
         </dependency>
-
     </dependencies>
-
-
 </project>
