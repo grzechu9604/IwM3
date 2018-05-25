@@ -27,7 +27,7 @@ public class Main extends Application {
         String lastNames = p.getLastNames();
         String teleCom = p.getTeleCom().getPhoneNumbers();
         String mails = p.getTeleCom().getMails();
-
+        String gender = p.getGender();
         String country = p.getAddressProxy().getCountry();
         String city = p.getAddressProxy().getCity();
         String line = p.getAddressProxy().getLine();

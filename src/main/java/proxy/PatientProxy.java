@@ -9,22 +9,32 @@ public class PatientProxy {
     private Patient patient;
     private String names;
     private String lastNames;
+    private String gender;
     private TelecomProxy teleCom;
     private AddressProxy addressProxy;
     private Date dateOfBirth;
 
     public Date getDateOfBirth() {
         if (dateOfBirth == null){
-            dateOfBirth = getDateOfBirthFRomPatient();
+            dateOfBirth = getDateOfBirthFromPatient();
         }
         return dateOfBirth;
     }
 
-    private Date getDateOfBirthFRomPatient(){
+    private Date getDateOfBirthFromPatient(){
         return patient.getBirthDate();
     }
 
+    public String getGender() {
+        if (gender == null){
+            gender = getGenderFromPatient();
+        }
+        return gender;
+    }
 
+    private String getGenderFromPatient(){
+        return patient.getGender();
+    }
 
     public PatientProxy(Patient patient){
         this.patient = patient;
