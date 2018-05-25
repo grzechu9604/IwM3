@@ -4,8 +4,7 @@ import ca.uhn.fhir.model.dstu2.resource.Patient;
 import connection.HapiService;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
-import java.io.IOException;
+import proxy.PatientProxy;
 
 public class Main extends Application {
     public static void main(String[] args) {
@@ -20,6 +19,10 @@ public class Main extends Application {
         HapiService hs = new HapiService();
 
         Patient p1 = hs.getPatientById("f001");
-        Patient p2 = hs.getPatientById("f002");
+
+        PatientProxy p = new PatientProxy(p1);
+        String names = p.getNames();
+        String lastNames = p.getLastNames();
+        System.out.println(names);
     }
 }
