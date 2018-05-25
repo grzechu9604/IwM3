@@ -6,6 +6,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import proxy.PatientProxy;
 
+import java.util.Date;
+
 public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
@@ -30,7 +32,7 @@ public class Main extends Application {
         String city = p.getAddressProxy().getCity();
         String line = p.getAddressProxy().getLine();
         String postalCode = p.getAddressProxy().getPostalCode();
-
+        Date dateOfBirth = p.getDateOfBirth();
         System.out.println(names);
     }
 }

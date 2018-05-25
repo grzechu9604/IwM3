@@ -3,12 +3,27 @@ package proxy;
 import ca.uhn.fhir.model.dstu2.resource.Patient;
 import ca.uhn.fhir.model.primitive.StringDt;
 
+import java.util.Date;
+
 public class PatientProxy {
     private Patient patient;
     private String names;
     private String lastNames;
     private TelecomProxy teleCom;
     private AddressProxy addressProxy;
+    private Date dateOfBirth;
+
+    public Date getDateOfBirth() {
+        if (dateOfBirth == null){
+            dateOfBirth = getDateOfBirthFRomPatient();
+        }
+        return dateOfBirth;
+    }
+
+    private Date getDateOfBirthFRomPatient(){
+        return patient.getBirthDate();
+    }
+
 
 
     public PatientProxy(Patient patient){
