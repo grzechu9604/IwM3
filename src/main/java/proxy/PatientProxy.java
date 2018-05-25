@@ -7,11 +7,15 @@ public class PatientProxy {
     private Patient patient;
     private String names;
     private String lastNames;
+    private TelecomProxy teleCom;
+    private AddressProxy addressProxy;
+
 
     public PatientProxy(Patient patient){
         this.patient = patient;
+        this.addressProxy = new AddressProxy(patient.getAddress().get(0));
+        this.teleCom = new TelecomProxy(patient.getTelecom());
     }
-
 
     private String setLastNamesFromPatient(){
         StringBuilder lastNamesFromPatientBuilder = new StringBuilder();
@@ -24,15 +28,19 @@ public class PatientProxy {
             return  "";
         }
 
-        return lastNamesFromPatientBuilder.toString();
+        return lastNamesFromPatientBuilder.toString().trim();
     }
 
     public String getLastNames(){
         if (lastNames != null){
             return lastNames;
         }
-        lastNames = setLastNamesFromPatient();
+        lastNames = setLastNamesFromPatient().trim();
         return lastNames;
+    }
+
+    public TelecomProxy getTeleCom(){
+        return teleCom;
     }
 
     @org.jetbrains.annotations.NotNull
@@ -47,7 +55,7 @@ public class PatientProxy {
             return  "";
         }
 
-        return namesFromPatientBuilder.toString();
+        return namesFromPatientBuilder.toString().trim();
     }
 
     public String getNames(){
@@ -56,5 +64,9 @@ public class PatientProxy {
         }
         names = setNamesFromPatient();
         return names;
+    }
+
+    public AddressProxy getAddressProxy() {
+        return addressProxy;
     }
 }

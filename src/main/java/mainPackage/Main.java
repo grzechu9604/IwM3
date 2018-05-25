@@ -23,6 +23,14 @@ public class Main extends Application {
         PatientProxy p = new PatientProxy(p1);
         String names = p.getNames();
         String lastNames = p.getLastNames();
+        String teleCom = p.getTeleCom().getPhoneNumbers();
+        String mails = p.getTeleCom().getMails();
+
+        String country = p.getAddressProxy().getCountry();
+        String city = p.getAddressProxy().getCity();
+        String line = p.getAddressProxy().getLine();
+        String postalCode = p.getAddressProxy().getPostalCode();
+
         System.out.println(names);
     }
 }
