@@ -1,15 +1,8 @@
 package mainPackage;
 
-import ca.uhn.fhir.model.dstu2.resource.Medication;
-import ca.uhn.fhir.model.dstu2.resource.MedicationStatement;
-import ca.uhn.fhir.model.dstu2.resource.Observation;
-import ca.uhn.fhir.model.dstu2.resource.Patient;
-import connection.HapiService;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import proxy.AddressProxy;
-import proxy.HapiServiceProxy;
-import proxy.TelecomProxy;
+import proxy.*;
 
 import java.util.List;
 
@@ -23,21 +16,23 @@ public class Main extends Application {
         primaryStage.setTitle("IwM3");
         primaryStage.show();
 
-        HapiService hs = new HapiService();
 
-        List<Patient> pList = hs.getPatients();
-        List<Observation> oList = hs.getObservations();
-        List<Medication> mList = hs.getMedications();
-        List<MedicationStatement> msList = hs.getMedicationStatements();
+        HapiServiceProxy hsp = new HapiServiceProxy();
 
-        HapiServiceProxy hsp = new HapiServiceProxy(hs);
+        List<PatientProxy> pList = hsp.getPatientProxies();
+        List<ObservationProxy> oList = hsp.getObservationProxies();
+        List<MedicationProxy> mList = hsp.getMedicationProxies();
+        List<MedicationStatementProxy> msList = hsp.getMedicatonStatementProxies();
 
-        Patient p1 = hs.getPatientById("341");
-        Observation o1 = hs.getObservationById("151");
-        Medication m1 = hs.getMedicationById("1082");
-        MedicationStatement ms1 = hs.getMedicationStatementById("166");
+        PatientProxy p1 = hsp.getPatientProxyById("341");
+        ObservationProxy o1 = hsp.getObservationProxyById("151");
+        MedicationProxy m1 = hsp.getMedicationProxyById("1082");
+        MedicationStatementProxy ms1 = hsp.getMedicationStatementProxyById("166");
 
-        hsp.getPatientProxies().forEach(p -> {
+        List<PatientProxy> patients = hsp.getPatientProxies();
+        patients.add(p1);
+
+        patients.forEach(p -> {
             System.out.println("NAME: " + p.getNames());
             System.out.println("LAST NAME: " + p.getLastNames());
 
