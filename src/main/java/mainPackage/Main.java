@@ -1,5 +1,8 @@
 package mainPackage;
 
+import ca.uhn.fhir.model.dstu2.resource.Medication;
+import ca.uhn.fhir.model.dstu2.resource.MedicationStatement;
+import ca.uhn.fhir.model.dstu2.resource.Observation;
 import ca.uhn.fhir.model.dstu2.resource.Patient;
 import connection.HapiListService;
 import connection.HapiService;
@@ -26,7 +29,14 @@ public class Main extends Application {
 
         HapiService hs = new HapiService();
         HapiListService<Patient> patientHapiListService = new HapiListService<>(hs, Patient.class);
+        HapiListService<Observation> observationHapiListService = new HapiListService<>(hs, Observation.class);
+        HapiListService<Medication> medicationHapiListService = new HapiListService<>(hs, Medication.class);
+        HapiListService<MedicationStatement> medicationStatementHapiListService = new HapiListService<>(hs, MedicationStatement.class);
+
         List<Patient> pList = patientHapiListService.getList();
+        List<Observation> oList = observationHapiListService.getList();
+        List<Medication> mList = medicationHapiListService.getList();
+        List<MedicationStatement> msList = medicationStatementHapiListService.getList();
 
         HapiServiceProxy hsp = new HapiServiceProxy(hs);
 
