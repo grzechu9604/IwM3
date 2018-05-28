@@ -63,4 +63,8 @@ public class HapiService {
         }
         return patients;
     }
+
+    IGenericClient getClient() {
+        return client;
+    }
 }

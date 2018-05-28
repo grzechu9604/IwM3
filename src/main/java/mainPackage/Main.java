@@ -1,6 +1,7 @@
 package mainPackage;
 
 import ca.uhn.fhir.model.dstu2.resource.Patient;
+import connection.HapiListService;
 import connection.HapiService;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -8,8 +9,10 @@ import proxy.AddressProxy;
 import proxy.HapiServiceProxy;
 import proxy.PatientProxy;
 import proxy.TelecomProxy;
+import sun.security.krb5.internal.PAData;
 
 import java.util.Date;
+import java.util.List;
 
 public class Main extends Application {
     public static void main(String[] args) {
@@ -22,6 +25,9 @@ public class Main extends Application {
         primaryStage.show();
 
         HapiService hs = new HapiService();
+        HapiListService<Patient> patientHapiListService = new HapiListService<>(hs, Patient.class);
+        List<Patient> pList = patientHapiListService.getList();
+
         HapiServiceProxy hsp = new HapiServiceProxy(hs);
 
         Patient p1 = hs.getPatientById("f001");
