@@ -4,7 +4,6 @@ import ca.uhn.fhir.model.dstu2.resource.Medication;
 import ca.uhn.fhir.model.dstu2.resource.MedicationStatement;
 import ca.uhn.fhir.model.dstu2.resource.Observation;
 import ca.uhn.fhir.model.dstu2.resource.Patient;
-import connection.HapiGenericService;
 import connection.HapiService;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -33,7 +32,10 @@ public class Main extends Application {
 
         HapiServiceProxy hsp = new HapiServiceProxy(hs);
 
-        Patient p1 = hs.getPatientById("f001");
+        Patient p1 = hs.getPatientById("341");
+        Observation o1 = hs.getObservationById("151");
+        Medication m1 = hs.getMedicationById("1082");
+        MedicationStatement ms1 = hs.getMedicationStatementById("166");
 
         hsp.getPatientProxies().forEach(p -> {
             System.out.println("NAME: " + p.getNames());

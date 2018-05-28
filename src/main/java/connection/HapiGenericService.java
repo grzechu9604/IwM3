@@ -2,6 +2,8 @@ package connection;
 
 import ca.uhn.fhir.model.dstu2.resource.BaseResource;
 import ca.uhn.fhir.model.dstu2.resource.Bundle;
+import ca.uhn.fhir.rest.gclient.ICriterion;
+import ca.uhn.fhir.rest.gclient.StringClientParam;
 import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
 import org.hl7.fhir.instance.model.api.IBaseBundle;
 
@@ -31,11 +33,24 @@ public class HapiGenericService<E extends BaseResource> {
         return list;
     }
 
-    public E get(String url) {
+    public E search(ICriterion<StringClientParam> criterion) {
         try {
-            return (E) hs.getClient().read()
-                    .resource(type.getSimpleName().toLowerCase())
-                    .withUrl(url)
+            return (E) hs.getClient()
+                    .search()
+                    .forResource(type.getSimpleName().toLowerCase())
+                    .where(criterion)
+                    .execute();
+        } catch (ResourceNotFoundException rnf) {
+            return null;
+        }
+    }
+
+    public E get(String id) {
+        try {
+            return hs.getClient()
+                    .read()
+                    .resource(type)
+                    .withId(id)
                     .execute();
         } catch (ResourceNotFoundException rnf) {
             return null;

@@ -3,12 +3,14 @@ package connection;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.model.dstu2.resource.*;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
+import ca.uhn.fhir.rest.gclient.ICriterion;
+import ca.uhn.fhir.rest.gclient.StringClientParam;
 
 import java.util.*;
 
 public class HapiService {
     private static final String serverDomainURL = "http://fhirtest.uhn.ca/baseDstu2";
-    private static final  String requestUrlPattern = "http://hl7.org/fhir/%s/";
+    private static final String requestUrlPattern = "http://hl7.org/fhir/%s/";
     private IGenericClient client;
     private Map<Class, HapiGenericService> services;
 
@@ -28,9 +30,24 @@ public class HapiService {
         return getRequestUrl(c) + id;
     }
 
+    public ICriterion<StringClientParam> getIdCriterion(String id) {
+        return new StringClientParam("_id").matches().value(id);
+    }
+
     public Patient getPatientById(String id) {
-        String requestString = prepareRequestString(Patient.class, id);
-        return (Patient) getService(Patient.class).get(requestString);
+        return (Patient) getService(Patient.class).get(id);
+    }
+
+    public Observation getObservationById(String id) {
+        return (Observation) getService(Observation.class).get(id);
+    }
+
+    public Medication getMedicationById(String id) {
+        return (Medication) getService(Medication.class).get(id);
+    }
+
+    public MedicationStatement getMedicationStatementById(String id) {
+        return (MedicationStatement) getService(MedicationStatement.class).get(id);
     }
 
     private HapiGenericService getService(Class c) {
@@ -38,7 +55,6 @@ public class HapiService {
             services.put(c, new HapiGenericService(this, c));
         }
         return services.get(c);
-
     }
 
     public List<Patient> getPatients() {
