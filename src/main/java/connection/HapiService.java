@@ -10,7 +10,6 @@ import java.util.*;
 
 public class HapiService {
     private static final String serverDomainURL = "http://fhirtest.uhn.ca/baseDstu2";
-    private static final String requestUrlPattern = "http://hl7.org/fhir/%s/";
     private IGenericClient client;
     private Map<Class, HapiGenericService> services;
 
@@ -19,15 +18,6 @@ public class HapiService {
         FhirContext ctx = FhirContext.forDstu2();
         client = ctx.newRestfulGenericClient(serverDomainURL);
         services = new HashMap<>();
-    }
-
-    private String getRequestUrl(Class c) {
-        Formatter f = new Formatter();
-        return f.format(requestUrlPattern, c.getSimpleName()).toString();
-    }
-
-    private String prepareRequestString(Class c, String id) {
-        return getRequestUrl(c) + id;
     }
 
     public ICriterion<StringClientParam> getIdCriterion(String id) {

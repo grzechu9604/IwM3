@@ -10,8 +10,13 @@ import java.util.stream.Collectors;
 public class HapiServiceProxy {
     private HapiService hs;
 
+    @Deprecated
     public HapiServiceProxy(HapiService hs) {
         this.hs = hs;
+    }
+
+    public HapiServiceProxy(){
+        this.hs = new HapiService();
     }
 
     public List<PatientProxy> getPatientProxies() {
