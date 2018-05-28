@@ -11,7 +11,9 @@ import org.hl7.fhir.instance.model.api.IBaseBundle;
 import sun.rmi.runtime.Log;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class HapiService {
@@ -21,15 +23,15 @@ public class HapiService {
     private IGenericClient client;
     private Map<Class, String> requestUrlMap;
 
-    public HapiService(){
+    public HapiService() {
         org.apache.log4j.BasicConfigurator.configure();
         FhirContext ctx = FhirContext.forDstu2();
         client = ctx.newRestfulGenericClient(serverDomainURL);
         requestUrlMap = prepareRequestUrlMap();
     }
 
-    private Map<Class, String> prepareRequestUrlMap(){
-        Map<Class, String> map = new HashMap<Class, String>();
+    private Map<Class, String> prepareRequestUrlMap() {
+        Map<Class, String> map = new HashMap<>();
 
         map.put(Patient.class, patientRequestString);
 
@@ -40,12 +42,25 @@ public class HapiService {
         return requestUrlMap.get(c) + id;
     }
 
-    public Patient getPatientById(String id){
+    public Patient getPatientById(String id) {
         try {
             String requestString = prepareRequestString(Patient.class, id);
             return (Patient) client.read().resource(patientClassNameForRequest).withUrl(requestString).execute();
-        } catch (ResourceNotFoundException rnf){
+        } catch (ResourceNotFoundException rnf) {
             return null;
         }
+    }
+
+    public List<Patient> getPatients() {
+        List<Patient> patients = new ArrayList<>();
+        try {
+            IBaseBundle bundle = client.search().forResource(Patient.class)
+                    .prettyPrint()
+                    .execute();
+            ((Bundle) bundle).getEntry().forEach(b -> patients.add((Patient) b.getResource()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return patients;
     }
 }

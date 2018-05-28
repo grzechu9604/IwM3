@@ -13,15 +13,15 @@ public class TelecomProxy {
     private String phoneString = "phone";
     private String mailString = "email";
 
-    TelecomProxy(List<ContactPointDt> contactPointDts){
+    TelecomProxy(List<ContactPointDt> contactPointDts) {
         this.contactPointDts = contactPointDts;
     }
 
-    private String collectElementByType(String type){
+    private String collectElementByType(String type) {
         StringBuilder sb = new StringBuilder();
 
         contactPointDts.forEach(contactPointDt -> {
-            if (contactPointDt.getSystem().equals(type)){
+            if (contactPointDt.getSystem() != null && contactPointDt.getSystem().equals(type)) {
                 sb.append(" ").append(contactPointDt.getValue());
             }
         });
@@ -29,23 +29,23 @@ public class TelecomProxy {
         return sb.toString().trim();
     }
 
-    private String getMailsFromArray(){
+    private String getMailsFromArray() {
         return collectElementByType(mailString);
     }
 
-    private String getPhoneNumbersFromArray(){
+    private String getPhoneNumbersFromArray() {
         return collectElementByType(phoneString);
     }
 
     public String getMails() {
-        if (mails == null){
+        if (mails == null) {
             mails = getMailsFromArray();
         }
         return mails;
     }
 
     public String getPhoneNumbers() {
-        if (phoneNumbers == null){
+        if (phoneNumbers == null) {
             phoneNumbers = getPhoneNumbersFromArray();
         }
         return phoneNumbers;

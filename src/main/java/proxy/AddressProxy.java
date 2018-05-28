@@ -11,66 +11,66 @@ public class AddressProxy {
     private String postalCode;
     private String city;
 
-    AddressProxy(AddressDt addressDt){
+    AddressProxy(AddressDt addressDt) {
         this.addressDt = addressDt;
     }
 
     public String getCountry() {
-        if(country == null) {
+        if (country == null) {
             country = getCountryFromDt();
         }
         return country;
     }
 
     public String getLine() {
-        if (line == null){
+        if (line == null) {
             line = getLineFromDt();
         }
         return line;
     }
 
     public String getPostalCode() {
-        if(postalCode == null){
+        if (postalCode == null) {
             postalCode = getPostalCodeFromDt();
         }
         return postalCode;
     }
 
     public String getCity() {
-        if(city == null){
+        if (city == null) {
             city = getCityFromDt();
         }
         return city;
     }
 
-    private String getCountryFromDt(){
+    private String getCountryFromDt() {
         try {
             return addressDt.getCountry();
-        } catch (Exception e){
+        } catch (Exception e) {
             return "";
         }
     }
 
-    private String getLineFromDt(){
+    private String getLineFromDt() {
         try {
             return addressDt.getLineFirstRep().getValueNotNull();
-        } catch (Exception e){
+        } catch (Exception e) {
             return "";
         }
     }
 
-    private String getPostalCodeFromDt(){
+    private String getPostalCodeFromDt() {
         try {
             return addressDt.getPostalCode();
-        } catch (Exception e){
+        } catch (Exception e) {
             return "";
         }
     }
 
-    private String getCityFromDt(){
+    private String getCityFromDt() {
         try {
             return addressDt.getCity();
-        } catch (Exception e){
+        } catch (Exception e) {
             return "";
         }
     }

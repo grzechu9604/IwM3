@@ -15,76 +15,77 @@ public class PatientProxy {
     private Date dateOfBirth;
 
     public Date getDateOfBirth() {
-        if (dateOfBirth == null){
+        if (dateOfBirth == null) {
             dateOfBirth = getDateOfBirthFromPatient();
         }
         return dateOfBirth;
     }
 
-    private Date getDateOfBirthFromPatient(){
+    private Date getDateOfBirthFromPatient() {
         return patient.getBirthDate();
     }
 
     public String getGender() {
-        if (gender == null){
+        if (gender == null) {
             gender = getGenderFromPatient();
         }
         return gender;
     }
 
-    private String getGenderFromPatient(){
+    private String getGenderFromPatient() {
         return patient.getGender();
     }
 
-    public PatientProxy(Patient patient){
+    PatientProxy(Patient patient) {
         this.patient = patient;
-        this.addressProxy = new AddressProxy(patient.getAddress().get(0));
+        if (!patient.getAddress().isEmpty())
+            this.addressProxy = new AddressProxy(patient.getAddress().get(0));
         this.teleCom = new TelecomProxy(patient.getTelecom());
     }
 
-    private String setLastNamesFromPatient(){
+    private String setLastNamesFromPatient() {
         StringBuilder lastNamesFromPatientBuilder = new StringBuilder();
 
         try {
             for (StringDt lastNameFromPatient : patient.getName().get(0).getFamily()) {
                 lastNamesFromPatientBuilder.append(" ").append(lastNameFromPatient.getValueNotNull());
             }
-        } catch (Exception e){
-            return  "";
+        } catch (Exception e) {
+            return "";
         }
 
         return lastNamesFromPatientBuilder.toString().trim();
     }
 
-    public String getLastNames(){
-        if (lastNames != null){
+    public String getLastNames() {
+        if (lastNames != null) {
             return lastNames;
         }
         lastNames = setLastNamesFromPatient().trim();
         return lastNames;
     }
 
-    public TelecomProxy getTeleCom(){
+    public TelecomProxy getTeleCom() {
         return teleCom;
     }
 
     @org.jetbrains.annotations.NotNull
-    private String setNamesFromPatient(){
+    private String setNamesFromPatient() {
         StringBuilder namesFromPatientBuilder = new StringBuilder();
 
         try {
             for (StringDt lastNameFromPatient : patient.getName().get(0).getGiven()) {
                 namesFromPatientBuilder.append(" ").append(lastNameFromPatient.getValueNotNull());
             }
-        } catch (Exception e){
-            return  "";
+        } catch (Exception e) {
+            return "";
         }
 
         return namesFromPatientBuilder.toString().trim();
     }
 
-    public String getNames(){
-        if (names != null){
+    public String getNames() {
+        if (names != null) {
             return names;
         }
         names = setNamesFromPatient();
