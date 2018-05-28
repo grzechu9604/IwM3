@@ -30,7 +30,10 @@ public class Main extends Application {
         MedicationStatementProxy ms1 = hsp.getMedicationStatementProxyById("166");
 
         List<PatientProxy> patients = hsp.getPatientProxies();
+        List<PatientProxy> patientsByName = hsp.getPatientProxiesByName("Cocinero");
+
         patients.add(p1);
+        patients.addAll(patientsByName);
 
         patients.forEach(p -> {
             System.out.println("NAME: " + p.getNames());

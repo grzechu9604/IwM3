@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class HapiServiceProxy {
     private HapiService hs;
 
-    public HapiServiceProxy(){
+    public HapiServiceProxy() {
         this.hs = new HapiService();
     }
 
@@ -28,19 +28,23 @@ public class HapiServiceProxy {
         return hs.getObservations().stream().map(ObservationProxy::new).collect(Collectors.toList());
     }
 
-    public PatientProxy getPatientProxyById(String id){
+    public PatientProxy getPatientProxyById(String id) {
         return new PatientProxy(hs.getPatientById(id));
     }
 
-    public MedicationProxy getMedicationProxyById(String id){
+    public MedicationProxy getMedicationProxyById(String id) {
         return new MedicationProxy(hs.getMedicationById(id));
     }
 
-    public MedicationStatementProxy getMedicationStatementProxyById(String id){
+    public MedicationStatementProxy getMedicationStatementProxyById(String id) {
         return new MedicationStatementProxy(hs.getMedicationStatementById(id));
     }
 
-    public ObservationProxy getObservationProxyById(String id){
+    public ObservationProxy getObservationProxyById(String id) {
         return new ObservationProxy(hs.getObservationById(id));
+    }
+
+    public List<PatientProxy> getPatientProxiesByName(String name) {
+        return hs.getPatientsByName(name).stream().map(PatientProxy::new).collect(Collectors.toList());
     }
 }

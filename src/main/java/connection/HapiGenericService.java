@@ -33,16 +33,19 @@ public class HapiGenericService<E extends BaseResource> {
         return list;
     }
 
-    public E search(ICriterion<StringClientParam> criterion) {
+    public List<E> search(ICriterion<StringClientParam> criterion) {
+        List<E> list = new ArrayList<>();
         try {
-            return (E) hs.getClient()
+            IBaseBundle bundle = hs.getClient()
                     .search()
-                    .forResource(type.getSimpleName().toLowerCase())
+                    .forResource(type)
                     .where(criterion)
                     .execute();
-        } catch (ResourceNotFoundException rnf) {
-            return null;
+            ((Bundle) bundle).getEntry().forEach(b -> list.add((E) b.getResource()));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return list;
     }
 
     public E get(String id) {
