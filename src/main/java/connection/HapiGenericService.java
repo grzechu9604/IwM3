@@ -31,9 +31,16 @@ public class HapiGenericService<E extends BaseResource> {
         return list;
     }
 
+    private String getClassName(Class c){
+        return c.getName().substring(c.getName().lastIndexOf('.') + 1).toLowerCase();
+    }
+
     public E get(String url) {
         try {
-            return (E) hs.getClient().read().resource(type.getName()).withUrl(url).execute();
+            return (E) hs.getClient().read()
+                    .resource(getClassName(type))
+                    .withUrl(url)
+                    .execute();
         } catch (ResourceNotFoundException rnf) {
             return null;
         }

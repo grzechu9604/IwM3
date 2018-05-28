@@ -43,12 +43,8 @@ public class HapiService {
     }
 
     public Patient getPatientById(String id) {
-        try {
             String requestString = prepareRequestString(Patient.class, id);
-            return (Patient) client.read().resource(patientClassNameForRequest).withUrl(requestString).execute();
-        } catch (ResourceNotFoundException rnf) {
-            return null;
-        }
+            return (Patient) getService(Patient.class).get(requestString);
     }
 
     private HapiGenericService getService(Class c) {
