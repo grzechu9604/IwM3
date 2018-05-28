@@ -12,7 +12,7 @@ public class HapiGenericService<E extends BaseResource> {
     private HapiService hs;
     private final Class<E> type;
 
-    HapiGenericService(HapiService hs, Class<E> type){
+    HapiGenericService(HapiService hs, Class<E> type) {
         this.hs = hs;
         this.type = type;
     }
@@ -31,14 +31,10 @@ public class HapiGenericService<E extends BaseResource> {
         return list;
     }
 
-    private String getClassName(Class c){
-        return c.getName().substring(c.getName().lastIndexOf('.') + 1).toLowerCase();
-    }
-
     public E get(String url) {
         try {
             return (E) hs.getClient().read()
-                    .resource(getClassName(type))
+                    .resource(type.getSimpleName().toLowerCase())
                     .withUrl(url)
                     .execute();
         } catch (ResourceNotFoundException rnf) {
