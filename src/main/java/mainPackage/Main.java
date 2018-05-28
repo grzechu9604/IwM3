@@ -4,17 +4,14 @@ import ca.uhn.fhir.model.dstu2.resource.Medication;
 import ca.uhn.fhir.model.dstu2.resource.MedicationStatement;
 import ca.uhn.fhir.model.dstu2.resource.Observation;
 import ca.uhn.fhir.model.dstu2.resource.Patient;
-import connection.HapiListService;
+import connection.HapiGenericService;
 import connection.HapiService;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import proxy.AddressProxy;
 import proxy.HapiServiceProxy;
-import proxy.PatientProxy;
 import proxy.TelecomProxy;
-import sun.security.krb5.internal.PAData;
 
-import java.util.Date;
 import java.util.List;
 
 public class Main extends Application {
@@ -28,15 +25,11 @@ public class Main extends Application {
         primaryStage.show();
 
         HapiService hs = new HapiService();
-        HapiListService<Patient> patientHapiListService = new HapiListService<>(hs, Patient.class);
-        HapiListService<Observation> observationHapiListService = new HapiListService<>(hs, Observation.class);
-        HapiListService<Medication> medicationHapiListService = new HapiListService<>(hs, Medication.class);
-        HapiListService<MedicationStatement> medicationStatementHapiListService = new HapiListService<>(hs, MedicationStatement.class);
 
-        List<Patient> pList = patientHapiListService.getList();
-        List<Observation> oList = observationHapiListService.getList();
-        List<Medication> mList = medicationHapiListService.getList();
-        List<MedicationStatement> msList = medicationStatementHapiListService.getList();
+        List<Patient> pList = hs.getPatients();
+        List<Observation> oList = hs.getObservations();
+        List<Medication> mList = hs.getMedications();
+        List<MedicationStatement> msList = hs.getMedicationStatements();
 
         HapiServiceProxy hsp = new HapiServiceProxy(hs);
 

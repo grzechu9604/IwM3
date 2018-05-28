@@ -2,9 +2,7 @@ package connection;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.model.api.Include;
-import ca.uhn.fhir.model.dstu2.resource.Bundle;
-import ca.uhn.fhir.model.dstu2.resource.Patient;
-import ca.uhn.fhir.model.dstu2.resource.Person;
+import ca.uhn.fhir.model.dstu2.resource.*;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
 import org.hl7.fhir.instance.model.api.IBaseBundle;
@@ -22,12 +20,14 @@ public class HapiService {
     private String patientClassNameForRequest = "patient";
     private IGenericClient client;
     private Map<Class, String> requestUrlMap;
+    private Map<Class, HapiGenericService> services;
 
     public HapiService() {
         org.apache.log4j.BasicConfigurator.configure();
         FhirContext ctx = FhirContext.forDstu2();
         client = ctx.newRestfulGenericClient(serverDomainURL);
         requestUrlMap = prepareRequestUrlMap();
+        services = new HashMap<>();
     }
 
     private Map<Class, String> prepareRequestUrlMap() {
@@ -51,17 +51,28 @@ public class HapiService {
         }
     }
 
-    public List<Patient> getPatients() {
-        List<Patient> patients = new ArrayList<>();
-        try {
-            IBaseBundle bundle = client.search().forResource(Patient.class)
-                    .prettyPrint()
-                    .execute();
-            ((Bundle) bundle).getEntry().forEach(b -> patients.add((Patient) b.getResource()));
-        } catch (Exception e) {
-            e.printStackTrace();
+    private HapiGenericService getService(Class c) {
+        if (services.get(c) == null) {
+            services.put(c, new HapiGenericService(this, c));
         }
-        return patients;
+        return services.get(c);
+
+    }
+
+    public List<Patient> getPatients() {
+        return getService(Patient.class).getList();
+    }
+
+    public List<Observation> getObservations() {
+        return getService(Observation.class).getList();
+    }
+
+    public List<Medication> getMedications() {
+        return getService(Medication.class).getList();
+    }
+
+    public List<MedicationStatement> getMedicationStatements() {
+        return getService(MedicationStatement.class).getList();
     }
 
     IGenericClient getClient() {

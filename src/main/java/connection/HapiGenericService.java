@@ -2,16 +2,17 @@ package connection;
 
 import ca.uhn.fhir.model.dstu2.resource.BaseResource;
 import ca.uhn.fhir.model.dstu2.resource.Bundle;
+import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
 import org.hl7.fhir.instance.model.api.IBaseBundle;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HapiListService<E extends BaseResource> {
+public class HapiGenericService<E extends BaseResource> {
     private HapiService hs;
     private final Class<E> type;
 
-    public HapiListService(HapiService hs, Class<E> type){
+    HapiGenericService(HapiService hs, Class<E> type){
         this.hs = hs;
         this.type = type;
     }
@@ -28,5 +29,13 @@ public class HapiListService<E extends BaseResource> {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public E get(String url) {
+        try {
+            return (E) hs.getClient().read().resource(type.getName()).withUrl(url).execute();
+        } catch (ResourceNotFoundException rnf) {
+            return null;
+        }
     }
 }
