@@ -7,8 +7,8 @@ import ca.uhn.fhir.rest.client.api.IGenericClient;
 import java.util.*;
 
 public class HapiService {
-    private String serverDomainURL = "http://fhirtest.uhn.ca/baseDstu2";
-    private String requestUrlPattern = "http://hl7.org/fhir/%s/";
+    private static final String serverDomainURL = "http://fhirtest.uhn.ca/baseDstu2";
+    private static final  String requestUrlPattern = "http://hl7.org/fhir/%s/";
     private IGenericClient client;
     private Map<Class, HapiGenericService> services;
 
