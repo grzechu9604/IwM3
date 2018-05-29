@@ -5,7 +5,6 @@ import ca.uhn.fhir.model.dstu2.resource.*;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.gclient.ICriterion;
 import ca.uhn.fhir.rest.gclient.StringClientParam;
-import proxy.PatientProxy;
 
 import java.util.*;
 
@@ -21,7 +20,7 @@ public class HapiService {
         services = new HashMap<>();
     }
 
-    private ICriterion<StringClientParam> generateCriterion(String criterionName, String value) {
+    private ICriterion<StringClientParam> generateStringCriterion(String criterionName, String value) {
         return new StringClientParam(criterionName).matches().value(value);
     }
 
@@ -49,12 +48,16 @@ public class HapiService {
     }
 
 
-    public List<Observation> getObservationsByPatient(Long patientId){
-        return getService(Observation.class).search(generateCriterion("patient", patientId.toString()));
+    public List<Observation> getObservationsByPatient(Long patientId) {
+        return getService(Observation.class).search(generateStringCriterion("patient", patientId.toString()));
+    }
+
+    public List<MedicationStatement> getMedicationStatementByPatient(Long patientId) {
+        return getService(MedicationStatement.class).search(generateStringCriterion("patient", patientId.toString()));
     }
 
     public List<Patient> getPatientsByName(String name) {
-        return getService(Patient.class).search(generateCriterion("name", name));
+        return getService(Patient.class).search(generateStringCriterion("name", name));
     }
 
     public List<Patient> getPatients() {

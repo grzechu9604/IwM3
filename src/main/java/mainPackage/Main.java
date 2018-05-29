@@ -36,9 +36,11 @@ public class Main extends Application {
         patients.addAll(patientsByName);
 
         patients.forEach(p -> {
-            List<ObservationProxy> observationProxyList = hsp.getObservationProxiesByPAtient(p.getId());
+            List<ObservationProxy> observationProxyList = hsp.getObservationProxiesByPatient(p.getId());
+            List<MedicationStatementProxy> medicationStatementProxyList = hsp.getMedicationStatementProxiesByPatient(p.getId());
 
             observationProxyList.forEach(o -> System.out.println(o.getFullText()));
+            medicationStatementProxyList.forEach(ms -> System.out.println("MAM"));
 
             System.out.println("ID: " + p.getId());
             System.out.println("NAME: " + p.getNames());
