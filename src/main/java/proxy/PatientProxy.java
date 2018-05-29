@@ -13,6 +13,7 @@ public class PatientProxy {
     private TelecomProxy teleCom;
     private AddressProxy addressProxy;
     private Date dateOfBirth;
+    private Long id;
 
     public Date getDateOfBirth() {
         if (dateOfBirth == null) {
@@ -90,6 +91,13 @@ public class PatientProxy {
         }
         names = setNamesFromPatient();
         return names;
+    }
+
+    public Long getId() {
+        if (id == null){
+            id = patient.getId().getIdPartAsLong();
+        }
+        return id;
     }
 
     public AddressProxy getAddressProxy() {
