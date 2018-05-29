@@ -47,4 +47,8 @@ public class HapiServiceProxy {
     public List<PatientProxy> getPatientProxiesByName(String name) {
         return hs.getPatientsByName(name).stream().map(PatientProxy::new).collect(Collectors.toList());
     }
+
+    public List<ObservationProxy> getObservationProxiesByPAtient(Long id){
+        return hs.getObservationsByPatient(id).stream().map(ObservationProxy::new).collect(Collectors.toList());
+    }
 }

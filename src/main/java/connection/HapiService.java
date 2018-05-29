@@ -48,6 +48,11 @@ public class HapiService {
         return services.get(c);
     }
 
+
+    public List<Observation> getObservationsByPatient(Long patientId){
+        return getService(Observation.class).search(generateCriterion("patient", patientId.toString()));
+    }
+
     public List<Patient> getPatientsByName(String name) {
         return getService(Patient.class).search(generateCriterion("name", name));
     }

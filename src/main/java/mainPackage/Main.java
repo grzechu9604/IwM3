@@ -36,6 +36,10 @@ public class Main extends Application {
         patients.addAll(patientsByName);
 
         patients.forEach(p -> {
+            List<ObservationProxy> observationProxyList = hsp.getObservationProxiesByPAtient(p.getId());
+            if (observationProxyList.size() > 0){
+                System.out.println("OBSERVATIONS AMOUNT: " + observationProxyList.size());
+            }
             System.out.println("ID: " + p.getId());
             System.out.println("NAME: " + p.getNames());
             System.out.println("LAST NAME: " + p.getLastNames());
