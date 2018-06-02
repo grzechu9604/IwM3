@@ -24,12 +24,6 @@ public class Main extends Application {
         List<MedicationProxy> mList = hsp.getMedicationProxies();
         List<MedicationStatementProxy> msList = hsp.getMedicatonStatementProxies();
 
-        mList.forEach(m -> {
-            System.out.println(m.getForm());
-            System.out.println(m.getProducer());
-            m.getIngredients().forEach(i -> System.out.println(i.getFullText()));
-        });
-
         PatientProxy p1 = hsp.getPatientProxyById("341");
         ObservationProxy o1 = hsp.getObservationProxyById("151");
         MedicationProxy m1 = hsp.getMedicationProxyById("1082");
