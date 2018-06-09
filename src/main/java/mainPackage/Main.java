@@ -1,31 +1,37 @@
 package mainPackage;
 
+import ca.uhn.fhir.model.dstu2.resource.MedicationStatement;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import proxy.*;
 
+import java.util.Date;
 import java.util.List;
 
 public class Main extends Application {
 
     private TableView tablePatient = new TableView();
     final Label labelPatient = new Label("Patient");
+    private final ObservableList<PatientProxy> dataPatient = FXCollections.observableArrayList();
 
-    private TableView tableObservations= new TableView();
+    private TableView tableObservations = new TableView();
     final Label labelObservations = new Label("Observations");
+    private final ObservableList<ObservationProxy> dataObservation = FXCollections.observableArrayList();
 
 
-    private final ObservableList<PatientProxy> data = FXCollections.observableArrayList();
+    private TableView tableMedicationStatement = new TableView();
+    final Label labelMedicationStatement = new Label("MedicationStatement");
+    private final ObservableList<MedicationProxy> dataMedicationStatement = FXCollections.observableArrayList();
+    //partof
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -34,7 +40,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("IwM3");
         BorderPane root = new BorderPane();
-        Scene scene = new Scene(root, 1024, 768, Color.WHITE);
+        Scene scene = new Scene(root, 1600, 800, Color.WHITE);
 
         GridPane gridpane = new GridPane();
         gridpane.setPadding(new Insets(5));
@@ -43,47 +49,38 @@ public class Main extends Application {
 
         // ### PATIENT ###
         TableColumn col_1_id = new TableColumn("Id");
-        col_1_id.setMinWidth(100);
+        col_1_id.setMinWidth(50);
         col_1_id.setCellValueFactory(
                 new PropertyValueFactory<PatientProxy, Long>("id"));
         TableColumn col_2_name = new TableColumn("Name");
-        col_2_name.setMinWidth(100);
+        col_2_name.setMinWidth(150);
         col_2_name.setCellValueFactory(
                 new PropertyValueFactory<PatientProxy, String>("names"));
-
         TableColumn col_3_lastname = new TableColumn("Last Name");
-        col_3_lastname.setMinWidth(100);
+        col_3_lastname.setMinWidth(150);
         col_3_lastname.setCellValueFactory(
                 new PropertyValueFactory<PatientProxy, String>("lastNames"));
         TableColumn col_4_genre = new TableColumn("Genre");
-        col_4_genre.setMinWidth(100);
+        col_4_genre.setMinWidth(50);
         col_4_genre.setCellValueFactory(
                 new PropertyValueFactory<PatientProxy, String>("gender"));
-
         HapiServiceProxy hsp = new HapiServiceProxy();
         List<PatientProxy> pList = hsp.getPatientProxies();
-        data.addAll(pList);
-
-        tablePatient.setItems(data);
+        dataPatient.addAll(pList);
+        tablePatient.setItems(dataPatient);
         tablePatient.getColumns().addAll(col_1_id, col_2_name, col_3_lastname, col_4_genre);
-
         tablePatient.setRowFactory(tv -> {
             TableRow<PatientProxy> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 1 && (! row.isEmpty()) ) {
                     PatientProxy rowData = row.getItem();
-                    System.out.println(rowData.getId());
-                    //clicklistener
 
-                    //####
-                    //List<ObservationProxy> observationProxyList = hsp.getObservationProxiesByPatient(rowData.getId());
+                    dataObservation.clear();
+                    //#TODO add clear function to all tablelist
 
-                    //observationProxyList.forEach( obs-> {
-                        //System.out.println(obs.getFullText());
-                    //});
-
-                    //####
-
+                    List<ObservationProxy> oList = hsp.getObservationProxiesByPatient(Long.valueOf(982)); //rowData.getId() //Long.valueOf(982)
+                    dataObservation.addAll(oList);
+                    tableObservations.setItems(dataObservation);
                 }
             });
             return row;
@@ -93,11 +90,71 @@ public class Main extends Application {
 
 
         // ### OBSERVATIONS ###
-        gridpane.add(labelObservations, 2, 0);
-        //gridpane.add(tablePatient, 1, 1);
-        List<ObservationProxy> oList = hsp.getObservationProxies();
+        TableColumn col_00 = new TableColumn("Id");
+        col_00.setMinWidth(50);
+        col_00.setCellValueFactory(
+                new PropertyValueFactory<ObservationProxy, Long>("observationId"));
+        TableColumn col_11 = new TableColumn("Date");
+        col_11.setMinWidth(200);
+        col_11.setCellValueFactory(
+                new PropertyValueFactory<ObservationProxy, Date>("observationDate"));
+        TableColumn col_22 = new TableColumn("Value");
+        col_22.setMinWidth(100);
+        col_22.setCellValueFactory(
+                new PropertyValueFactory<ObservationProxy, String>("observedValue"));
+        TableColumn col_33 = new TableColumn("Description");
+        col_33.setMinWidth(300);
+        col_33.setCellValueFactory(
+                new PropertyValueFactory<ObservationProxy, Date>("observationDescription"));
+
+        tableObservations.getColumns().addAll(col_00, col_11, col_22, col_33);
+        gridpane.add(labelObservations, 1, 0);
+        gridpane.add(tableObservations, 1, 1);
 
 
+
+        /*
+        List<MedicationStatementProxy> medicationStatementProxyList = hsp.getMedicationStatementProxiesByPatient(Long.valueOf(982));
+
+        if(medicationStatementProxyList.isEmpty()){
+            System.out.println("-->puste");
+        }else{
+            System.out.println("-->cos tam jest");
+        }
+        */
+
+        /*tableObservations.setRowFactory(tv -> {
+            TableRow<ObservationProxy> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 1 && (! row.isEmpty()) ) {
+                    ObservationProxy rowData = row.getItem();
+                    System.out.println(rowData.getObservationId());
+
+                    List<MedicationStatementProxy> medicationStatementProxyList = hsp.getMedicationStatementProxiesByPatient(p.getId())
+
+                    if(medicationStatementProxyList.isEmpty()){
+                        System.out.println("puste");
+                    }else{
+                        System.out.println("cos tam jest");
+                    }
+
+                }
+            });
+            return row;
+        });*/
+
+
+
+
+        // ### MEDICATION ###
+
+        //TableColumn col_111 = new TableColumn("Date");
+        //col_111.setMinWidth(100);
+        //col_111.setCellValueFactory(
+        //        new PropertyValueFactory<MedicationStatement, Date>("observationDate"));
+
+        gridpane.add(labelMedicationStatement, 2, 0);
+        //gridpane.add(tableMedicationStatement, 2, 1);
 
 
         // ### SET VIEW ###
