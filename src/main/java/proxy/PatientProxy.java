@@ -34,7 +34,11 @@ public class PatientProxy {
     }
 
     private String getGenderFromPatient() {
-        return patient.getGender().getDisplay();
+        try{
+            return patient.getGender().getDisplay();
+        }catch (Exception e){
+            return "";
+        }
     }
 
     PatientProxy(Patient patient) {

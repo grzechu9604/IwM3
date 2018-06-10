@@ -5,6 +5,7 @@ import ca.uhn.fhir.model.primitive.DateTimeDt;
 import ca.uhn.fhir.model.primitive.IdDt;
 
 import java.util.Date;
+import java.util.List;
 
 public class ObservationProxy {
     private Observation observation;
@@ -23,10 +24,20 @@ public class ObservationProxy {
 
     public Date getObservationDate() {
         // TODO musisz tu popróbować coś z observation.getEffective().castToDate() jak z tego datę wyciągnąć
-        //if(observationDate == null)
-            //if (observation.getEffective() != null)
-                //observationDate = observation.getEffective().castToDate();
-
+        if(this.observationId.equals("102000") ){
+            try {
+                if (observationDate == null){
+                    if (observation.getEffective() != null) {
+                        //observation.getValueDateTimeType().casToDa;
+                        System.out.println("#");
+                        //observationDate = observation.getEffective().castToDate();
+                    }
+                }
+            }catch (Exception e){
+                System.out.println("#");
+            }
+        }
+        //observationDate = observation.getEffective().castToDate();
         return observationDate;
     }
 
@@ -43,11 +54,12 @@ public class ObservationProxy {
 
     public String getObservationDescription() {
         if (observationDescription == null){
-            observationDescription = observation.getCode().getCoding().get(0).getDisplay();
-            if (observationDescription == null){
+            try{
+                observationDescription = observation.getCode().getCoding().get(0).getDisplay();
+            }catch(Exception e){
                 observationDescription = observation.getCode().getText();
             }
-        }
+            }
         return observationDescription;
     }
 

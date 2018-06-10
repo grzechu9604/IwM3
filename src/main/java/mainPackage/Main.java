@@ -11,10 +11,10 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.hl7.fhir.dstu3.model.MedicationStatement;
+import org.jetbrains.annotations.NotNull;
 import proxy.*;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class Main extends Application {
 
@@ -69,7 +69,11 @@ public class Main extends Application {
         col_4_genre.setCellValueFactory(
                 new PropertyValueFactory<PatientProxy, String>("gender"));
         HapiServiceProxy hsp = new HapiServiceProxy();
+
+        PatientProxy p1 = hsp.getPatientProxyById("123");
         List<PatientProxy> pList = hsp.getPatientProxies();
+        pList.add(p1);
+
         dataPatient.addAll(pList);
         tablePatient.setItems(dataPatient);
         tablePatient.getColumns().addAll(col_1_id, col_2_name, col_3_lastname, col_4_genre);
@@ -79,6 +83,7 @@ public class Main extends Application {
                 if (event.getClickCount() == 1 && (! row.isEmpty()) ) {
                     PatientProxy rowData = row.getItem();
 
+                    /*
                     //MEDICATION add to table
                     dataMedication.clear();
                     List<MedicationProxy> mList = hsp.getMedicationProxies();
@@ -89,11 +94,14 @@ public class Main extends Application {
                     dataMedicationStatement.clear();
                     List<MedicationStatementProxy> msList = hsp.getMedicationStatementProxiesByPatient(rowData.getId());
                     dataMedicationStatement.addAll(msList);
-                    tableMedicationStatement.setItems(dataMedicationStatement);
+                    tableMedicationStatement.setItems(dataMedicationStatement);*/
 
                     //OBSERVATION add to table
                     dataObservation.clear();
-                    List<ObservationProxy> oList = hsp.getObservationProxiesByPatient(rowData.getId()); //rowData.getId() //Long.valueOf(982)
+                    List<ObservationProxy> oList = hsp.getObservationProxiesByPatient(rowData.getId());
+                    ObservationProxy o1 = hsp.getObservationProxyById("102000");
+                    oList.add(o1);
+
                     dataObservation.addAll(oList);
                     tableObservations.setItems(dataObservation);
                 }

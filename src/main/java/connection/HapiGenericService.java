@@ -12,7 +12,7 @@ import java.util.List;
 public class HapiGenericService<E extends BaseResource> {
     private HapiService hs;
     private final Class<E> type;
-    private final int maxListSize = 100;
+    private final int maxListSize = 10000;
 
     HapiGenericService(HapiService hs, Class<E> type) {
         this.hs = hs;

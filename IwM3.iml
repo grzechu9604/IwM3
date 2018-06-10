@@ -32,5 +32,6 @@
     <orderEntry type="library" name="Maven: ca.uhn.hapi.fhir:hapi-fhir-structures-dstu3:3.3.0" level="project" />
     <orderEntry type="library" name="Maven: ca.uhn.hapi.fhir:hapi-fhir-utilities:3.3.0" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:16.0.2" level="project" />
+    <orderEntry type="library" name="Maven: ca.uhn.hapi.fhir:hapi-fhir-structures-dstu2:3.3.0" level="project" />
   </component>
 </module>
