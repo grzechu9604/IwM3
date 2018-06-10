@@ -9,7 +9,9 @@ import ca.uhn.fhir.rest.gclient.StringClientParam;
 import java.util.*;
 
 public class HapiService {
-    private static final String serverDomainURL = "http://fhirtest.uhn.ca/baseDstu2";
+    //CHCIALBYM ZMIENIC TUTAJ
+    private static final String serverDomainURL = "http://fhirtest.uhn.ca/baseDstu3";
+    //private static final String serverDomainURL = "http://fhirtest.uhn.ca/baseDstu2";
     private IGenericClient client;
     private Map<Class, HapiGenericService> services;
 

@@ -26,11 +26,15 @@ public class Main extends Application {
     final Label labelObservations = new Label("Observations");
     private final ObservableList<ObservationProxy> dataObservation = FXCollections.observableArrayList();
 
-
     private TableView tableMedicationStatement = new TableView();
     final Label labelMedicationStatement = new Label("MedicationStatement");
-    private final ObservableList<MedicationProxy> dataMedicationStatement = FXCollections.observableArrayList();
-    //partof
+    private final ObservableList<MedicationStatementProxy> dataMedicationStatement = FXCollections.observableArrayList();
+
+    private TableView tableMedication = new TableView();
+    final Label labelMedication = new Label("Medication");
+    private final ObservableList<MedicationProxy> dataMedication = FXCollections.observableArrayList();
+
+
 
     public static void main(String[] args) {
         launch(args);
@@ -75,10 +79,21 @@ public class Main extends Application {
                 if (event.getClickCount() == 1 && (! row.isEmpty()) ) {
                     PatientProxy rowData = row.getItem();
 
-                    dataObservation.clear();
-                    //#TODO add clear function to all tablelist
+                    //MEDICATION add to table
+                    dataMedication.clear();
+                    List<MedicationProxy> mList = hsp.getMedicationProxies();
+                    dataMedication.addAll(mList);
+                    tableMedication.setItems(dataMedication);
 
-                    List<ObservationProxy> oList = hsp.getObservationProxiesByPatient(Long.valueOf(982)); //rowData.getId() //Long.valueOf(982)
+                    //MEDICATIONSTATEMENT add to table
+                    dataMedicationStatement.clear();
+                    List<MedicationStatementProxy> msList = hsp.getMedicationStatementProxiesByPatient(rowData.getId());
+                    dataMedicationStatement.addAll(msList);
+                    tableMedicationStatement.setItems(dataMedicationStatement);
+
+                    //OBSERVATION add to table
+                    dataObservation.clear();
+                    List<ObservationProxy> oList = hsp.getObservationProxiesByPatient(rowData.getId()); //rowData.getId() //Long.valueOf(982)
                     dataObservation.addAll(oList);
                     tableObservations.setItems(dataObservation);
                 }
@@ -111,6 +126,37 @@ public class Main extends Application {
         gridpane.add(labelObservations, 1, 0);
         gridpane.add(tableObservations, 1, 1);
 
+        // ### MEDICATIONSTATEMENT ###
+        TableColumn col_111 = new TableColumn("Id");
+        col_111.setMinWidth(100);
+        col_111.setCellValueFactory(
+                new PropertyValueFactory<MedicationStatement, Long>("medicationStatementId"));
+
+        tableMedicationStatement.getColumns().addAll(col_111);
+        gridpane.add(labelMedicationStatement, 2, 0);
+        gridpane.add(tableMedicationStatement, 2, 1);
+
+
+        // ### MEDICATION ###
+        TableColumn col_1111 = new TableColumn("Id");
+        col_1111.setMinWidth(50);
+        col_1111.setCellValueFactory(
+                new PropertyValueFactory<MedicationStatement, Long>("medicationId"));
+
+        tableMedication.getColumns().addAll(col_1111);
+        gridpane.add(labelMedication, 1, 2);
+        gridpane.add(tableMedication, 1, 3);
+
+        // ### SET VIEW ###
+        root.setCenter(gridpane);
+        GridPane.setVgrow(root, Priority.ALWAYS);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+}
+
+
+
 
 
         /*
@@ -142,28 +188,6 @@ public class Main extends Application {
             });
             return row;
         });*/
-
-
-
-
-        // ### MEDICATION ###
-
-        //TableColumn col_111 = new TableColumn("Date");
-        //col_111.setMinWidth(100);
-        //col_111.setCellValueFactory(
-        //        new PropertyValueFactory<MedicationStatement, Date>("observationDate"));
-
-        gridpane.add(labelMedicationStatement, 2, 0);
-        //gridpane.add(tableMedicationStatement, 2, 1);
-
-
-        // ### SET VIEW ###
-        root.setCenter(gridpane);
-        GridPane.setVgrow(root, Priority.ALWAYS);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-}
 
 
 

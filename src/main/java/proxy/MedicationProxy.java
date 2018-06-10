@@ -7,9 +7,11 @@ import java.util.stream.Collectors;
 
 public class MedicationProxy {
     private Medication medication;
+    private Long medicationId;
 
     MedicationProxy(Medication medication) {
         this.medication = medication;
+        this.medicationId = medication.getId().getIdPartAsLong();
     }
 
     public String getProducer() {
@@ -31,5 +33,9 @@ public class MedicationProxy {
 
     public List<IngredientProxy> getIngredients() {
         return medication.getProduct().getIngredient().stream().map(IngredientProxy::new).collect(Collectors.toList());
+    }
+
+    public Long getMedicationId() {
+        return medicationId;
     }
 }
