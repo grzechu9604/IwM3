@@ -48,11 +48,11 @@ public class HapiServiceProxy {
         return hs.getPatientsByName(name).stream().map(PatientProxy::new).collect(Collectors.toList());
     }
 
-    public List<ObservationProxy> getObservationProxiesByPatient(Long id) {
+    public List<ObservationProxy> getObservationProxiesByPatient(String id) {
         return hs.getObservationsByPatient(id).stream().map(ObservationProxy::new).collect(Collectors.toList());
     }
 
-    public List<MedicationStatementProxy> getMedicationStatementProxiesByPatient(Long id) {
+    public List<MedicationStatementProxy> getMedicationStatementProxiesByPatient(String id) {
         return hs.getMedicationStatementByPatient(id).stream().map(MedicationStatementProxy::new).collect(Collectors.toList());
     }
 }

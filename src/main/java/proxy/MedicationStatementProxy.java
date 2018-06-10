@@ -1,17 +1,17 @@
 package proxy;
 
-import ca.uhn.fhir.model.dstu2.resource.MedicationStatement;
+import org.hl7.fhir.dstu3.model.*;
 
 public class MedicationStatementProxy {
     private MedicationStatement medicationStatement;
-    private Long medicationStatementId;
+    private String medicationStatementId;
 
     MedicationStatementProxy(MedicationStatement medicationStatement) {
         this.medicationStatement = medicationStatement;
-        this.medicationStatementId = medicationStatement.getId().getIdPartAsLong();
+        this.medicationStatementId = medicationStatement.getIdElement().getIdPart();
     }
 
-    public Long getMedicationStatementId() {
+    public String getMedicationStatementId() {
         return medicationStatementId;
     }
 }

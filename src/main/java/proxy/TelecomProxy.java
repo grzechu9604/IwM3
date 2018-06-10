@@ -1,19 +1,18 @@
 package proxy;
 
-import ca.uhn.fhir.model.dstu2.composite.ContactPointDt;
+import org.hl7.fhir.dstu3.model.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TelecomProxy {
-    private List<ContactPointDt> contactPointDts;
+    private List<ContactPoint> contactPointDts;
     private String mails;
     private String phoneNumbers;
 
     private String phoneString = "phone";
     private String mailString = "email";
 
-    TelecomProxy(List<ContactPointDt> contactPointDts) {
+    TelecomProxy(List<ContactPoint> contactPointDts) {
         this.contactPointDts = contactPointDts;
     }
 

@@ -1,18 +1,17 @@
 package proxy;
 
-import ca.uhn.fhir.model.dstu2.composite.AddressDt;
-import ca.uhn.fhir.model.dstu2.resource.Patient;
+import org.hl7.fhir.dstu3.model.*;
 
 public class AddressProxy {
-    private AddressDt addressDt;
+    private Address address;
 
     private String country;
     private String line;
     private String postalCode;
     private String city;
 
-    AddressProxy(AddressDt addressDt) {
-        this.addressDt = addressDt;
+    AddressProxy(Address addressDt) {
+        this.address = addressDt;
     }
 
     public String getCountry() {
@@ -45,7 +44,7 @@ public class AddressProxy {
 
     private String getCountryFromDt() {
         try {
-            return addressDt.getCountry();
+            return address.getCountry();
         } catch (Exception e) {
             return "";
         }
@@ -53,7 +52,7 @@ public class AddressProxy {
 
     private String getLineFromDt() {
         try {
-            return addressDt.getLineFirstRep().getValueNotNull();
+            return address.getLine().get(0).getValueNotNull();
         } catch (Exception e) {
             return "";
         }
@@ -61,7 +60,7 @@ public class AddressProxy {
 
     private String getPostalCodeFromDt() {
         try {
-            return addressDt.getPostalCode();
+            return address.getPostalCode();
         } catch (Exception e) {
             return "";
         }
@@ -69,7 +68,7 @@ public class AddressProxy {
 
     private String getCityFromDt() {
         try {
-            return addressDt.getCity();
+            return address.getCity();
         } catch (Exception e) {
             return "";
         }

@@ -1,23 +1,21 @@
 package connection;
 
 import ca.uhn.fhir.context.FhirContext;
-import ca.uhn.fhir.model.dstu2.resource.*;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.gclient.ICriterion;
 import ca.uhn.fhir.rest.gclient.StringClientParam;
+import org.hl7.fhir.dstu3.model.*;
 
 import java.util.*;
 
 public class HapiService {
-    //CHCIALBYM ZMIENIC TUTAJ
     private static final String serverDomainURL = "http://fhirtest.uhn.ca/baseDstu3";
-    //private static final String serverDomainURL = "http://fhirtest.uhn.ca/baseDstu2";
     private IGenericClient client;
     private Map<Class, HapiGenericService> services;
 
     public HapiService() {
         org.apache.log4j.BasicConfigurator.configure();
-        FhirContext ctx = FhirContext.forDstu2();
+        FhirContext ctx = FhirContext.forDstu3();
         client = ctx.newRestfulGenericClient(serverDomainURL);
         services = new HashMap<>();
     }
@@ -50,11 +48,11 @@ public class HapiService {
     }
 
 
-    public List<Observation> getObservationsByPatient(Long patientId) {
+    public List<Observation> getObservationsByPatient(String patientId) {
         return getService(Observation.class).search(generateStringCriterion("patient", patientId.toString()));
     }
 
-    public List<MedicationStatement> getMedicationStatementByPatient(Long patientId) {
+    public List<MedicationStatement> getMedicationStatementByPatient(String patientId) {
         return getService(MedicationStatement.class).search(generateStringCriterion("patient", patientId.toString()));
     }
 

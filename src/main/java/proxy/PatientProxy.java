@@ -1,6 +1,6 @@
 package proxy;
 
-import ca.uhn.fhir.model.dstu2.resource.Patient;
+import org.hl7.fhir.dstu3.model.*;
 import ca.uhn.fhir.model.primitive.StringDt;
 
 import java.util.Date;
@@ -13,7 +13,7 @@ public class PatientProxy {
     private TelecomProxy teleCom;
     private AddressProxy addressProxy;
     private Date dateOfBirth;
-    private Long id;
+    private String id;
 
     public Date getDateOfBirth() {
         if (dateOfBirth == null) {
@@ -34,7 +34,7 @@ public class PatientProxy {
     }
 
     private String getGenderFromPatient() {
-        return patient.getGender();
+        return patient.getGender().getDisplay();
     }
 
     PatientProxy(Patient patient) {
@@ -46,11 +46,8 @@ public class PatientProxy {
 
     private String setLastNamesFromPatient() {
         StringBuilder lastNamesFromPatientBuilder = new StringBuilder();
-
         try {
-            for (StringDt lastNameFromPatient : patient.getName().get(0).getFamily()) {
-                lastNamesFromPatientBuilder.append(" ").append(lastNameFromPatient.getValueNotNull());
-            }
+            lastNamesFromPatientBuilder.append(patient.getName().get(0).getFamily());
         } catch (Exception e) {
             return "";
         }
@@ -75,7 +72,7 @@ public class PatientProxy {
         StringBuilder namesFromPatientBuilder = new StringBuilder();
 
         try {
-            for (StringDt lastNameFromPatient : patient.getName().get(0).getGiven()) {
+            for (StringType lastNameFromPatient : patient.getName().get(0).getGiven()) {
                 namesFromPatientBuilder.append(" ").append(lastNameFromPatient.getValueNotNull());
             }
         } catch (Exception e) {
@@ -93,9 +90,9 @@ public class PatientProxy {
         return names;
     }
 
-    public Long getId() {
+    public String getId() {
         if (id == null){
-            id = patient.getId().getIdPartAsLong();
+            id = patient.getIdElement().getIdPart();
         }
         return id;
     }

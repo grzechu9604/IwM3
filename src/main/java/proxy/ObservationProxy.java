@@ -1,7 +1,6 @@
 package proxy;
 
-import ca.uhn.fhir.model.dstu2.composite.QuantityDt;
-import ca.uhn.fhir.model.dstu2.resource.Observation;
+import org.hl7.fhir.dstu3.model.*;
 import ca.uhn.fhir.model.primitive.DateTimeDt;
 import ca.uhn.fhir.model.primitive.IdDt;
 
@@ -9,7 +8,7 @@ import java.util.Date;
 
 public class ObservationProxy {
     private Observation observation;
-    private Long observationId;
+    private String observationId;
     private Date observationDate;
     private String observedValue;
     private String observationDescription;
@@ -23,16 +22,17 @@ public class ObservationProxy {
     }
 
     public Date getObservationDate() {
-        if(observationDate == null)
-            if (observation.getEffective() != null)
-                observationDate = ((DateTimeDt)(observation.getEffective())).getValue();
+        // TODO musisz tu popróbować coś z observation.getEffective().castToDate() jak z tego datę wyciągnąć
+        //if(observationDate == null)
+            //if (observation.getEffective() != null)
+                //observationDate = observation.getEffective().castToDate();
 
         return observationDate;
     }
 
     public String getObservedValue() {
         if (observedValue == null){
-            QuantityDt qdt = (QuantityDt)observation.getValue();
+            Quantity qdt = (Quantity)observation.getValue();
             if (qdt.getValue() != null && qdt.getUnit() != null)
                 observedValue = qdt.getValue() + " " + qdt.getUnit();
             else
@@ -51,13 +51,13 @@ public class ObservationProxy {
         return observationDescription;
     }
 
-    public Long getObservationId() {
-        IdDt iddt = (IdDt) observation.getId();
-        setObservationId(iddt.getIdPartAsLong());
+    public String getObservationId() {
+        String id = observation.getIdElement().getIdPart();
+        setObservationId(id);
         return observationId;
     }
 
-    public void setObservationId(Long observationId) {
+    public void setObservationId(String observationId) {
         this.observationId = observationId;
     }
 }

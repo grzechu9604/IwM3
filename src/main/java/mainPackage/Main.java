@@ -1,6 +1,5 @@
 package mainPackage;
 
-import ca.uhn.fhir.model.dstu2.resource.MedicationStatement;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,6 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.hl7.fhir.dstu3.model.MedicationStatement;
 import proxy.*;
 
 import java.util.Date;
