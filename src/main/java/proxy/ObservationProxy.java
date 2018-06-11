@@ -14,7 +14,7 @@ public class ObservationProxy {
     private String observedValue;
     private String observationDescription;
 
-    public String getFullText(){
+    public String getFullText() {
         return getObservationDate() + " " + getObservationDescription() + " " + getObservedValue();
     }
 
@@ -23,29 +23,24 @@ public class ObservationProxy {
     }
 
     public String getObservationDate() {
-        // TODO musisz tu popróbować coś z observation.getEffective().castToDate() jak z tego datę wyciągnąć
         try {
-            if (observationDate == null){
+            if (observationDate == null) {
                 if (observation.getEffective() != null) {
-                    //observation.getValueDateTimeType().casToDa;
-                    System.out.println("#");
                     observationDate = observation.getEffective().primitiveValue();
                 }
+                else {
+                    observationDate = "";
+                }
             }
-            else
-            {
-                observationDate = "";
-            }
-            }catch (Exception e){
-                System.out.println("#");
-            }
-        //observationDate = observation.getEffective().castToDate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return observationDate;
     }
 
     public String getObservedValue() {
-        if (observedValue == null){
-            Quantity qdt = (Quantity)observation.getValue();
+        if (observedValue == null) {
+            Quantity qdt = (Quantity) observation.getValue();
             if (qdt != null && qdt.getValue() != null && qdt.getUnit() != null)
                 observedValue = qdt.getValue() + " " + qdt.getUnit();
             else
@@ -55,13 +50,13 @@ public class ObservationProxy {
     }
 
     public String getObservationDescription() {
-        if (observationDescription == null){
-            try{
+        if (observationDescription == null) {
+            try {
                 observationDescription = observation.getCode().getCoding().get(0).getDisplay();
-            }catch(Exception e){
+            } catch (Exception e) {
                 observationDescription = observation.getCode().getText();
             }
-            }
+        }
         return observationDescription;
     }
 
