@@ -72,7 +72,7 @@ public class Main extends Application {
 
         // TODO: TEXTBOX Z LABELEM NAME - I WRZUCIĆ JEGO ZAWARTOŚĆ DO LINIJKI 75
         List<PatientProxy> pList = new LinkedList<>();
-        List<PatientProxy> pListByName = hsp.getPatientProxiesByName("Mathias");
+        List<PatientProxy> pListByName = hsp.getPatientProxiesByName("Smith");
         //List<PatientProxy> namPList = hsp.getPatientProxiesByName("Nam");
         //pList.addAll(namPList);
         pList.addAll(pListByName);

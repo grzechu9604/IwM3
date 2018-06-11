@@ -6,6 +6,7 @@ import ca.uhn.fhir.rest.gclient.ICriterion;
 import ca.uhn.fhir.rest.gclient.StringClientParam;
 import org.hl7.fhir.dstu3.model.*;
 
+import java.net.SocketTimeoutException;
 import java.util.*;
 
 public class HapiService {
@@ -57,7 +58,7 @@ public class HapiService {
     }
 
     public List<Patient> getPatientsByName(String name) {
-        return getService(Patient.class).search(generateStringCriterion("name", name));
+        return getService(Patient.class).search(generateStringCriterion("name", name), 50, 3);
     }
 
     public List<Patient> getPatients() {
