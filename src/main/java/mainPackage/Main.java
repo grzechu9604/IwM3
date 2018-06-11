@@ -34,6 +34,9 @@ public class Main extends Application {
     final Label labelMedication = new Label("Medication");
     private final ObservableList<MedicationProxy> dataMedication = FXCollections.observableArrayList();
 
+    private void getObservationFromDates(Date from, Date to, String patientId){
+
+    }
 
 
     public static void main(String[] args) {

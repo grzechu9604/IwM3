@@ -1,41 +1,47 @@
 package proxy;
 
 import org.hl7.fhir.dstu3.model.*;
-import ca.uhn.fhir.model.primitive.DateTimeDt;
-import ca.uhn.fhir.model.primitive.IdDt;
 
 import java.util.Date;
-import java.util.List;
 
 public class ObservationProxy {
     private Observation observation;
     private String observationId;
-    private String observationDate;
+    private String observationDateStr;
     private String observedValue;
     private String observationDescription;
 
     public String getFullText() {
-        return getObservationDate() + " " + getObservationDescription() + " " + getObservedValue();
+        return getObservationDateStr() + " " + getObservationDescription() + " " + getObservedValue();
     }
 
     ObservationProxy(Observation observation) {
         this.observation = observation;
     }
 
-    public String getObservationDate() {
+    public Date getObservationDate(){
+        if (observation.getEffective() != null) {
+            return ((DateTimeType)observation.getEffective()).getValue();
+        }
+        else {
+            return null;
+        }
+    }
+
+    public String getObservationDateStr() {
         try {
-            if (observationDate == null) {
+            if (observationDateStr == null) {
                 if (observation.getEffective() != null) {
-                    observationDate = observation.getEffective().primitiveValue();
+                    observationDateStr = observation.getEffective().primitiveValue();
                 }
                 else {
-                    observationDate = "";
+                    observationDateStr = "";
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return observationDate;
+        return observationDateStr;
     }
 
     public String getObservedValue() {

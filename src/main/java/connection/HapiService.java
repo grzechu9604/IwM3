@@ -48,7 +48,6 @@ public class HapiService {
         return services.get(c);
     }
 
-
     public List<Observation> getObservationsByPatient(String patientId) {
         return getService(Observation.class).search(generateStringCriterion("patient", patientId.toString()));
     }
