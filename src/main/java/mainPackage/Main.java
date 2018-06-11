@@ -70,11 +70,12 @@ public class Main extends Application {
                 new PropertyValueFactory<PatientProxy, String>("gender"));
         HapiServiceProxy hsp = new HapiServiceProxy();
 
-        PatientProxy p0 = hsp.getPatientProxyById("vietnam");
-        PatientProxy p1 = hsp.getPatientProxyById("123");
-        List<PatientProxy> pList = hsp.getPatientProxies();
-        pList.add(p0);
-        pList.add(p1);
+        // TODO: TEXTBOX Z LABELEM NAME - I WRZUCIĆ JEGO ZAWARTOŚĆ DO LINIJKI 75
+        List<PatientProxy> pList = new LinkedList<>();
+        List<PatientProxy> pListByName = hsp.getPatientProxiesByName("Mathias");
+        //List<PatientProxy> namPList = hsp.getPatientProxiesByName("Nam");
+        //pList.addAll(namPList);
+        pList.addAll(pListByName);
 
         dataPatient.addAll(pList);
         tablePatient.setItems(dataPatient);
