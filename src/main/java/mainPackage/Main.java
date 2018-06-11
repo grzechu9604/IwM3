@@ -91,13 +91,13 @@ public class Main extends Application {
                     dataMedication.clear();
                     List<MedicationProxy> mList = hsp.getMedicationProxies();
                     dataMedication.addAll(mList);
-                    tableMedication.setItems(dataMedication);
+                    tableMedication.setItems(dataMedication);*/
 
                     //MEDICATIONSTATEMENT add to table
                     dataMedicationStatement.clear();
                     List<MedicationStatementProxy> msList = hsp.getMedicationStatementProxiesByPatient(rowData.getId());
                     dataMedicationStatement.addAll(msList);
-                    tableMedicationStatement.setItems(dataMedicationStatement);*/
+                    tableMedicationStatement.setItems(dataMedicationStatement);
 
                     //OBSERVATION add to table
                     dataObservation.clear();

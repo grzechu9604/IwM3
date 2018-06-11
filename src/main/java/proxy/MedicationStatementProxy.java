@@ -14,4 +14,29 @@ public class MedicationStatementProxy {
     public String getMedicationStatementId() {
         return medicationStatementId;
     }
+    public String getActivity() {
+        if (medicationStatement.getStatus()!= null)
+            return medicationStatement.getStatus().getDisplay();
+        else
+            return "";
+    }
+    public String getMedicationName() {
+        if (medicationStatement.getMedication() != null)
+            return ((CodeableConcept)medicationStatement.getMedication()).getText();
+        else
+            return "";
+    }
+    public String getDosage() {
+        if (medicationStatement.getDosageFirstRep() != null)
+            return medicationStatement.getDosageFirstRep().getText();
+        else
+            return "";
+    }
+    public String getTaken() {
+        if (medicationStatement.getTaken() != null)
+            return medicationStatement.getTaken().getDisplay();
+        else
+            return "";
+    }
+
 }
