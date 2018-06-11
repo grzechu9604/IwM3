@@ -11,7 +11,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.hl7.fhir.dstu3.model.MedicationStatement;
-import org.jetbrains.annotations.NotNull;
 import proxy.*;
 
 import java.util.*;
@@ -51,6 +50,13 @@ public class Main extends Application {
         tableObservations.setItems(dataObservation);
     }
 
+    private void updatePatientsList(String name, HapiServiceProxy hsp){
+        List<PatientProxy> pList = hsp.getPatientProxiesByName(name);
+        dataPatient.clear();
+        dataPatient.addAll(pList);
+        tablePatient.setItems(dataPatient);
+    }
+
 
     public static void main(String[] args) {
         launch(args);
@@ -86,15 +92,8 @@ public class Main extends Application {
                 new PropertyValueFactory<PatientProxy, String>("gender"));
         HapiServiceProxy hsp = new HapiServiceProxy();
 
-        List<PatientProxy> pList = new LinkedList<>();
-        // TODO: TEXTBOX Z LABELEM NAME - I WRZUCIĆ JEGO ZAWARTOŚĆ DO LINIJKI PONIŻEJ
-        List<PatientProxy> pListByName = hsp.getPatientProxiesByName("Smith");
-        //List<PatientProxy> namPList = hsp.getPatientProxiesByName("Nam");
-        //pList.addAll(namPList);
-        pList.addAll(pListByName);
+        updatePatientsList("Smith", hsp);
 
-        dataPatient.addAll(pList);
-        tablePatient.setItems(dataPatient);
         tablePatient.getColumns().addAll(col_1_id, col_2_name, col_3_lastname, col_4_genre);
         tablePatient.setRowFactory(tv -> {
             TableRow<PatientProxy> row = new TableRow<>();
