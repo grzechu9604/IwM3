@@ -102,13 +102,6 @@ public class Main extends Application {
                 if (event.getClickCount() == 1 && (! row.isEmpty()) ) {
                     PatientProxy rowData = row.getItem();
 
-                    /*
-                    //MEDICATION add to table
-                    dataMedication.clear();
-                    List<MedicationProxy> mList = hsp.getMedicationProxies();
-                    dataMedication.addAll(mList);
-                    tableMedication.setItems(dataMedication);*/
-
                     //MEDICATIONSTATEMENT add to table
                     dataMedicationStatement.clear();
                     List<MedicationStatementProxy> msList = hsp.getMedicationStatementProxiesByPatient(rowData.getId());
@@ -157,6 +150,11 @@ public class Main extends Application {
         gridpane.add(labelMedicationStatement, 2, 0);
         gridpane.add(tableMedicationStatement, 2, 1);
 
+        //MEDICATION add to table
+        dataMedication.clear();
+        List<MedicationProxy> mList = hsp.getMedicationProxies();
+        dataMedication.addAll(mList);
+        tableMedication.setItems(dataMedication);
 
         // ### MEDICATION ###
         TableColumn col_1111 = new TableColumn("Id");

@@ -17,23 +17,26 @@ public class MedicationProxy {
     public String getProducer() {
         try {
             return medication.getManufacturer().getDisplay();
-        }catch (Exception e){
-            return null;
+        } catch (Exception e) {
+            return "";
         }
     }
 
-//    public String getForm() {
-//        try {
-//            return medication..getProduct().getForm().getText();
-//        }
-//        catch (Exception e) {
-//            return null;
-//        }
-//    }
-//
-//    public List<IngredientProxy> getIngredients() {
-//        return medication.getProduct().getIngredient().stream().map(IngredientProxy::new).collect(Collectors.toList());
-//    }
+    public String getForm() {
+        try {
+            return medication.getForm().getText();
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    public boolean getIsOverTheCounter() {
+        try {
+            return medication.getIsOverTheCounter();
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     public String getMedicationId() {
         return medicationId;
