@@ -34,8 +34,21 @@ public class Main extends Application {
     final Label labelMedication = new Label("Medication");
     private final ObservableList<MedicationProxy> dataMedication = FXCollections.observableArrayList();
 
-    private void getObservationFromDates(Date from, Date to, String patientId){
+    private boolean shouldAddObservationToList(Date from, Date to, Date observationDate){
+        return (from == null || observationDate != null && from.before(observationDate))
+                && (to == null || observationDate != null && to.after(observationDate));
+    }
 
+    private void updateObservationList(Date from, Date to, String patientId, HapiServiceProxy hsp){
+        dataObservation.clear();
+        List<ObservationProxy> oList = hsp.getObservationProxiesByPatient(patientId);
+
+        oList.forEach(o -> {
+            if (shouldAddObservationToList(from, to, o.getObservationDate()))
+                dataObservation.add(o);
+        });
+
+        tableObservations.setItems(dataObservation);
     }
 
 
@@ -73,8 +86,8 @@ public class Main extends Application {
                 new PropertyValueFactory<PatientProxy, String>("gender"));
         HapiServiceProxy hsp = new HapiServiceProxy();
 
-        // TODO: TEXTBOX Z LABELEM NAME - I WRZUCIĆ JEGO ZAWARTOŚĆ DO LINIJKI 75
         List<PatientProxy> pList = new LinkedList<>();
+        // TODO: TEXTBOX Z LABELEM NAME - I WRZUCIĆ JEGO ZAWARTOŚĆ DO LINIJKI PONIŻEJ
         List<PatientProxy> pListByName = hsp.getPatientProxiesByName("Smith");
         //List<PatientProxy> namPList = hsp.getPatientProxiesByName("Nam");
         //pList.addAll(namPList);
@@ -103,11 +116,7 @@ public class Main extends Application {
                     tableMedicationStatement.setItems(dataMedicationStatement);
 
                     //OBSERVATION add to table
-                    dataObservation.clear();
-                    List<ObservationProxy> oList = hsp.getObservationProxiesByPatient(rowData.getId());
-
-                    dataObservation.addAll(oList);
-                    tableObservations.setItems(dataObservation);
+                    updateObservationList(null, null, rowData.getId(), hsp);
                 }
             });
             return row;
