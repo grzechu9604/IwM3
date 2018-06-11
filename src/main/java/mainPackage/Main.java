@@ -70,8 +70,10 @@ public class Main extends Application {
                 new PropertyValueFactory<PatientProxy, String>("gender"));
         HapiServiceProxy hsp = new HapiServiceProxy();
 
+        PatientProxy p0 = hsp.getPatientProxyById("vietnam");
         PatientProxy p1 = hsp.getPatientProxyById("123");
         List<PatientProxy> pList = hsp.getPatientProxies();
+        pList.add(p0);
         pList.add(p1);
 
         dataPatient.addAll(pList);
@@ -99,8 +101,6 @@ public class Main extends Application {
                     //OBSERVATION add to table
                     dataObservation.clear();
                     List<ObservationProxy> oList = hsp.getObservationProxiesByPatient(rowData.getId());
-                    ObservationProxy o1 = hsp.getObservationProxyById("102000");
-                    oList.add(o1);
 
                     dataObservation.addAll(oList);
                     tableObservations.setItems(dataObservation);

@@ -10,7 +10,7 @@ import java.util.List;
 public class ObservationProxy {
     private Observation observation;
     private String observationId;
-    private Date observationDate;
+    private String observationDate;
     private String observedValue;
     private String observationDescription;
 
@@ -22,21 +22,23 @@ public class ObservationProxy {
         this.observation = observation;
     }
 
-    public Date getObservationDate() {
+    public String getObservationDate() {
         // TODO musisz tu popróbować coś z observation.getEffective().castToDate() jak z tego datę wyciągnąć
-        if(this.observationId.equals("102000") ){
-            try {
-                if (observationDate == null){
-                    if (observation.getEffective() != null) {
-                        //observation.getValueDateTimeType().casToDa;
-                        System.out.println("#");
-                        //observationDate = observation.getEffective().castToDate();
-                    }
+        try {
+            if (observationDate == null){
+                if (observation.getEffective() != null) {
+                    //observation.getValueDateTimeType().casToDa;
+                    System.out.println("#");
+                    observationDate = observation.getEffective().primitiveValue();
                 }
+            }
+            else
+            {
+                observationDate = "";
+            }
             }catch (Exception e){
                 System.out.println("#");
             }
-        }
         //observationDate = observation.getEffective().castToDate();
         return observationDate;
     }
@@ -44,7 +46,7 @@ public class ObservationProxy {
     public String getObservedValue() {
         if (observedValue == null){
             Quantity qdt = (Quantity)observation.getValue();
-            if (qdt.getValue() != null && qdt.getUnit() != null)
+            if (qdt != null && qdt.getValue() != null && qdt.getUnit() != null)
                 observedValue = qdt.getValue() + " " + qdt.getUnit();
             else
                 observedValue = "";
