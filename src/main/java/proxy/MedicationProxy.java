@@ -8,10 +8,17 @@ import java.util.stream.Collectors;
 public class MedicationProxy {
     private Medication medication;
     private String medicationId;
+    private String medicationProducer;
+    private String medicationForm;
+    private boolean medicationIsOverTheCounter;
+
 
     MedicationProxy(Medication medication) {
         this.medication = medication;
         this.medicationId = medication.getIdElement().getIdPart();
+        this.medicationProducer =  getProducer();
+        this.medicationForm = getForm();
+        this.medicationIsOverTheCounter = getIsOverTheCounter();
     }
 
     public String getProducer() {
@@ -24,7 +31,7 @@ public class MedicationProxy {
 
     public String getForm() {
         try {
-            return medication.getForm().getText();
+            return medication.getForm().getText().toString();
         } catch (Exception e) {
             return "";
         }
