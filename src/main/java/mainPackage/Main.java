@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -12,9 +13,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.hl7.fhir.dstu3.model.Medication;
 import org.hl7.fhir.dstu3.model.MedicationStatement;
 import proxy.*;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.chrono.ChronoLocalDate;
 import java.util.*;
 
 public class Main extends Application {
@@ -37,10 +42,15 @@ public class Main extends Application {
     final Label labelMedication = new Label("Medication");
     private final ObservableList<MedicationProxy> dataMedication = FXCollections.observableArrayList();
 
+    private String helperId = "";
+
     private boolean shouldAddObservationToList(Date from, Date to, Date observationDate){
         return (from == null || observationDate != null && from.before(observationDate))
                 && (to == null || observationDate != null && to.after(observationDate));
     }
+
+    private DatePicker checkInDatePickerFrom;
+    private DatePicker checkInDatePickerTo;
 
     private void updateObservationList(Date from, Date to, String patientId, HapiServiceProxy hsp){
         dataObservation.clear();
@@ -116,6 +126,7 @@ public class Main extends Application {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 1 && (! row.isEmpty()) ) {
                     PatientProxy rowData = row.getItem();
+                    helperId = rowData.getId();
 
                     //MEDICATIONSTATEMENT add to table
                     dataMedicationStatement.clear();
@@ -165,24 +176,23 @@ public class Main extends Application {
         TableColumn col_111 = new TableColumn("Id");
         col_111.setMinWidth(100);
         col_111.setCellValueFactory(
-                new PropertyValueFactory<MedicationStatement, String>("medicationStatementId"));
+                new PropertyValueFactory<MedicationStatementProxy, String>("medicationStatementId"));
         TableColumn col_222 = new TableColumn("Activity");
         col_222.setMinWidth(100);
         col_222.setCellValueFactory(
-                new PropertyValueFactory<MedicationStatement, String>("medicationStatementActivity"));
+                new PropertyValueFactory<MedicationStatementProxy, String>("medicationStatementActivity"));
         TableColumn col_333 = new TableColumn("Name");
         col_333.setMinWidth(100);
         col_333.setCellValueFactory(
-                new PropertyValueFactory<MedicationStatement, String>("medicationStatementName"));
+                new PropertyValueFactory<MedicationStatementProxy, String>("medicationStatementName"));
         TableColumn col_444 = new TableColumn("Dosage");
         col_444.setMinWidth(100);
         col_444.setCellValueFactory(
-                new PropertyValueFactory<MedicationStatement, String>("medicationStatementDosage"));
+                new PropertyValueFactory<MedicationStatementProxy, String>("medicationStatementDosage"));
         TableColumn col_555 = new TableColumn("Taken");
         col_555.setMinWidth(100);
         col_555.setCellValueFactory(
-                new PropertyValueFactory<MedicationStatement, String>("medicationStatementTaken"));
-
+                new PropertyValueFactory<MedicationStatementProxy, String>("medicationStatementTaken"));
 
         tableMedicationStatement.getColumns().addAll(col_111, col_222, col_333, col_444, col_555);
         gridpane.add(labelMedicationStatement, 2, 0);
@@ -192,19 +202,20 @@ public class Main extends Application {
         TableColumn col_1111 = new TableColumn("Id");
         col_1111.setMinWidth(50);
         col_1111.setCellValueFactory(
-                new PropertyValueFactory<MedicationStatement, Long>("medicationId"));
+                new PropertyValueFactory<MedicationProxy, Long>("medicationId"));
         TableColumn col_2222 = new TableColumn("Producer");
         col_2222.setMinWidth(50);
         col_2222.setCellValueFactory(
-                new PropertyValueFactory<MedicationStatement, String>("medicationProducer"));
+                new PropertyValueFactory<MedicationProxy, String>("medicationProducer"));
+        //#TODO Form nie wiem czy dziala?
         TableColumn col_3333 = new TableColumn("Form");
         col_3333.setMinWidth(50);
         col_3333.setCellValueFactory(
-                new PropertyValueFactory<MedicationStatement, String>("medicationForm"));
+                new PropertyValueFactory<MedicationProxy, String>("medicationForm"));
         TableColumn col_4444 = new TableColumn("IsOverTheCounter");
         col_4444.setMinWidth(50);
         col_4444.setCellValueFactory(
-                new PropertyValueFactory<MedicationStatement, Boolean>("medicationIsOverTheCounter"));
+                new PropertyValueFactory<MedicationProxy, Boolean>("medicationIsOverTheCounter"));
         tableMedication.getColumns().addAll(col_1111, col_2222, col_3333, col_4444);
         gridpane.add(labelMedication, 1, 2);
         gridpane.add(tableMedication, 1, 3);
@@ -214,31 +225,35 @@ public class Main extends Application {
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(5);
         grid.setHgap(5);
+        grid.add(labelPatientFilter, 0, 0);
         final TextField lastName = new TextField();
         lastName.setMinWidth(200);
         lastName.setPromptText("Wprowadź nazwisko pacjenta");
-        GridPane.setConstraints(lastName, 0, 0);
+        GridPane.setConstraints(lastName, 0, 1);
         grid.getChildren().add(lastName);
         Button submit = new Button("Szukaj po nazwisku");
-        GridPane.setConstraints(submit, 1, 0);
+        GridPane.setConstraints(submit, 1, 1);
         grid.getChildren().add(submit);
-        Button clear = new Button("Wyczyść filtr lub wyszukaj ponownie)");
-        GridPane.setConstraints(clear, 1, 1);
+        Button clear = new Button("Wyczyść filtr lub wyszukaj ponownie");
+        GridPane.setConstraints(clear, 1, 2);
         grid.getChildren().add(clear);
-        gridpane.add(labelPatientFilter, 0, 2);
-        gridpane.add(grid, 0, 3);
 
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 if ((lastName.getText() != null && !lastName.getText().isEmpty())) {
+                    dataMedication.clear();
+                    dataMedicationStatement.clear();
+                    dataObservation.clear();
                     updatePatientsList(lastName.getText(), hsp);
                 } else {
+                    dataMedication.clear();
+                    dataMedicationStatement.clear();
+                    dataObservation.clear();
                     getPatientsList(hsp);
                 }
             }
         });
-
         clear.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -250,7 +265,49 @@ public class Main extends Application {
             }
         });
 
+        //FILTER FOR OBSERVATION
+        grid.add(labelObservationsFilter, 0, 4);
+        checkInDatePickerFrom = new DatePicker();
+        checkInDatePickerFrom.setPromptText("Data from");
+        GridPane.setConstraints(checkInDatePickerFrom, 0, 5);
+        grid.getChildren().add(checkInDatePickerFrom);
+        checkInDatePickerTo = new DatePicker();
+        checkInDatePickerTo.setPromptText("Data To");
+        GridPane.setConstraints(checkInDatePickerTo, 0, 6);
+        grid.getChildren().add(checkInDatePickerTo);
+        Button submitObservation  = new Button("Dodaj filtr");
+        GridPane.setConstraints(submitObservation, 1, 5);
+        grid.getChildren().add(submitObservation);
+        Button clearObservation = new Button("Usuń filtr");
+        GridPane.setConstraints(clearObservation, 1, 6);
+        grid.getChildren().add(clearObservation);
+        gridpane.add(grid, 0, 3);
 
+
+        submitObservation.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (checkInDatePickerFrom != null && checkInDatePickerTo != null && !helperId.isEmpty() ) {
+                    updateObservationList(java.sql.Date.valueOf(String.valueOf(checkInDatePickerFrom)),
+                            java.sql.Date.valueOf(String.valueOf(checkInDatePickerTo)), helperId, hsp);
+                } else {
+                    dataObservation.clear();
+                    if(!helperId.isEmpty()) {
+                        updateObservationList(null, null, helperId, hsp);
+                    }
+
+                }
+            }
+        });
+        clearObservation.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                dataObservation.clear();
+                if(!helperId.isEmpty()) {
+                    updateObservationList(null, null, helperId, hsp);
+                }
+            }
+        });
 
         // ### SET VIEW ###
         root.setCenter(gridpane);
@@ -259,83 +316,3 @@ public class Main extends Application {
         primaryStage.show();
     }
 }
-
-
-
-
-
-        /*
-        List<MedicationStatementProxy> medicationStatementProxyList = hsp.getMedicationStatementProxiesByPatient(Long.valueOf(982));
-
-        if(medicationStatementProxyList.isEmpty()){
-            System.out.println("-->puste");
-        }else{
-            System.out.println("-->cos tam jest");
-        }
-        */
-
-        /*tableObservations.setRowFactory(tv -> {
-            TableRow<ObservationProxy> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 1 && (! row.isEmpty()) ) {
-                    ObservationProxy rowData = row.getItem();
-                    System.out.println(rowData.getObservationId());
-
-                    List<MedicationStatementProxy> medicationStatementProxyList = hsp.getMedicationStatementProxiesByPatient(p.getId())
-
-                    if(medicationStatementProxyList.isEmpty()){
-                        System.out.println("puste");
-                    }else{
-                        System.out.println("cos tam jest");
-                    }
-
-                }
-            });
-            return row;
-        });*/
-
-
-
-//List<MedicationProxy> mList = hsp.getMedicationProxies();
-//List<MedicationStatementProxy> msList = hsp.getMedicatonStatementProxies();
-
-//PatientProxy p1 = hsp.getPatientProxyById("341");
-//ObservationProxy o1 = hsp.getObservationProxyById("151");
-//MedicationProxy m1 = hsp.getMedicationProxyById("1082");
-//MedicationStatementProxy ms1 = hsp.getMedicationStatementProxyById("166");
-
-//List<PatientProxy> patients = hsp.getPatientProxies();
-//List<PatientProxy> patientsByName = hsp.getPatientProxiesByName("Smith");
-
-//patients.add(p1);
-//patients.addAll(patientsByName);
-        /*
-
-        pList.forEach(p -> {
-            //List<ObservationProxy> observationProxyList = hsp.getObservationProxiesByPatient(p.getId());
-            //List<MedicationStatementProxy> medicationStatementProxyList = hsp.getMedicationStatementProxiesByPatient(p.getId());
-
-            //observationProxyList.forEach(o -> System.out.println(o.getFullText()));
-            //medicationStatementProxyList.forEach(ms -> System.out.println("MAM"));
-
-            System.out.println("\n\n\nID: " + p.getId());
-            System.out.println("NAME: " + p.getNames());
-            System.out.println("LAST NAME: " + p.getLastNames());
-
-            TelecomProxy telecom = p.getTeleCom();
-            if (telecom != null) {
-                System.out.println("PHONE NUMBERS: " + telecom.getPhoneNumbers());
-                System.out.println("MAILS: " + telecom.getMails());
-            }
-            System.out.println("GENDER: " + p.getGender());
-
-            AddressProxy addressProxy = p.getAddressProxy();
-            if (p.getAddressProxy() != null) {
-                System.out.println("COUNTRY: " + addressProxy.getCountry());
-                System.out.println("CITY: " + addressProxy.getCity());
-                System.out.println("LINE: " + addressProxy.getLine());
-                System.out.println("POSTAL CODE: " + addressProxy.getPostalCode());
-            }
-            System.out.println("BIRTH DATE: " + p.getDateOfBirth());
-        });
-*/

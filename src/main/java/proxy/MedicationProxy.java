@@ -2,9 +2,6 @@ package proxy;
 
 import org.hl7.fhir.dstu3.model.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class MedicationProxy {
     private Medication medication;
     private String medicationId;
@@ -15,10 +12,10 @@ public class MedicationProxy {
 
     MedicationProxy(Medication medication) {
         this.medication = medication;
-        this.medicationId = medication.getIdElement().getIdPart();
-        this.medicationProducer =  getProducer();
-        this.medicationForm = getForm();
-        this.medicationIsOverTheCounter = getIsOverTheCounter();
+        this.setMedicationId(medication.getIdElement().getIdPart());
+        this.setMedicationProducer(getProducer());
+        this.setMedicationForm(getForm());
+        this.setMedicationIsOverTheCounter(getIsOverTheCounter());
     }
 
     public String getProducer() {
@@ -31,7 +28,7 @@ public class MedicationProxy {
 
     public String getForm() {
         try {
-            return medication.getForm().getText().toString();
+            return medication.getForm().getText();
         } catch (Exception e) {
             return "";
         }
@@ -47,5 +44,33 @@ public class MedicationProxy {
 
     public String getMedicationId() {
         return medicationId;
+    }
+
+    public String getMedicationProducer() {
+        return medicationProducer;
+    }
+
+    public void setMedicationProducer(String medicationProducer) {
+        this.medicationProducer = medicationProducer;
+    }
+
+    public String getMedicationForm() {
+        return medicationForm;
+    }
+
+    public void setMedicationForm(String medicationForm) {
+        this.medicationForm = medicationForm;
+    }
+
+    public boolean isMedicationIsOverTheCounter() {
+        return medicationIsOverTheCounter;
+    }
+
+    public void setMedicationIsOverTheCounter(boolean medicationIsOverTheCounter) {
+        this.medicationIsOverTheCounter = medicationIsOverTheCounter;
+    }
+
+    public void setMedicationId(String medicationId) {
+        this.medicationId = medicationId;
     }
 }
