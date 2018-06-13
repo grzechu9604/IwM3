@@ -1,7 +1,7 @@
 package proxy;
 
-import org.hl7.fhir.dstu3.model.*;
-import ca.uhn.fhir.model.primitive.StringDt;
+
+import ca.uhn.fhir.model.dstu2.resource.*;
 
 import java.util.Date;
 
@@ -10,8 +10,6 @@ public class PatientProxy {
     private String names;
     private String lastNames;
     private String gender;
-    private TelecomProxy teleCom;
-    private AddressProxy addressProxy;
     private Date dateOfBirth;
     private String id;
 
@@ -35,7 +33,7 @@ public class PatientProxy {
 
     private String getGenderFromPatient() {
         try{
-            return patient.getGender().getDisplay();
+            return patient.getGender();//. getDisplay();
         }catch (Exception e){
             return "";
         }
@@ -43,9 +41,6 @@ public class PatientProxy {
 
     PatientProxy(Patient patient) {
         this.patient = patient;
-        if (!patient.getAddress().isEmpty())
-            this.addressProxy = new AddressProxy(patient.getAddress().get(0));
-        this.teleCom = new TelecomProxy(patient.getTelecom());
     }
 
     private String setLastNamesFromPatient() {
@@ -67,23 +62,19 @@ public class PatientProxy {
         return lastNames;
     }
 
-    public TelecomProxy getTeleCom() {
-        return teleCom;
-    }
-
     @org.jetbrains.annotations.NotNull
     private String setNamesFromPatient() {
         StringBuilder namesFromPatientBuilder = new StringBuilder();
 
-        try {
+       /* try {
             for (StringType lastNameFromPatient : patient.getName().get(0).getGiven()) {
                 namesFromPatientBuilder.append(" ").append(lastNameFromPatient.getValueNotNull());
             }
-        } catch (Exception e) {
+        } catch (Exception e) {*/
             return "";
-        }
+        //}
 
-        return namesFromPatientBuilder.toString().trim();
+        //return namesFromPatientBuilder.toString().trim();
     }
 
     public String getNames() {
@@ -101,7 +92,4 @@ public class PatientProxy {
         return id;
     }
 
-    public AddressProxy getAddressProxy() {
-        return addressProxy;
-    }
 }

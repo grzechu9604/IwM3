@@ -4,19 +4,19 @@ import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.gclient.ICriterion;
 import ca.uhn.fhir.rest.gclient.StringClientParam;
-import org.hl7.fhir.dstu3.model.*;
+import ca.uhn.fhir.model.dstu2.resource.*;
 
 import java.net.SocketTimeoutException;
 import java.util.*;
 
 public class HapiService {
-    private static final String serverDomainURL = "http://fhirtest.uhn.ca/baseDstu3";
+    private static final String serverDomainURL = "http://test.fhir.org/r2/";
     private IGenericClient client;
     private Map<Class, HapiGenericService> services;
 
     public HapiService() {
         org.apache.log4j.BasicConfigurator.configure();
-        FhirContext ctx = FhirContext.forDstu3();
+        FhirContext ctx = FhirContext.forDstu2();
         client = ctx.newRestfulGenericClient(serverDomainURL);
         services = new HashMap<>();
     }

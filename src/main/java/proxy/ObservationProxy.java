@@ -1,6 +1,6 @@
 package proxy;
 
-import org.hl7.fhir.dstu3.model.*;
+import ca.uhn.fhir.model.dstu2.resource.*;
 
 import java.util.Date;
 
@@ -21,7 +21,7 @@ public class ObservationProxy {
 
     public Date getObservationDate(){
         if (observation.getEffective() != null) {
-            return ((DateTimeType)observation.getEffective()).getValue();
+            return new Date();//((DateTimeType)observation.getEffective()).getValue();
         }
         else {
             return null;
@@ -32,7 +32,7 @@ public class ObservationProxy {
         try {
             if (observationDateStr == null) {
                 if (observation.getEffective() != null) {
-                    observationDateStr = observation.getEffective().primitiveValue();
+                    observationDateStr = observation.getEffective().toString();// primitiveValue();
                 }
                 else {
                     observationDateStr = "";
@@ -46,10 +46,10 @@ public class ObservationProxy {
 
     public String getObservedValue() {
         if (observedValue == null) {
-            Quantity qdt = (Quantity) observation.getValue();
+           /* Quantity qdt = (Quantity) observation.getValue();
             if (qdt != null && qdt.getValue() != null && qdt.getUnit() != null)
                 observedValue = qdt.getValue() + " " + qdt.getUnit();
-            else
+            else*/
                 observedValue = "";
         }
         return observedValue;

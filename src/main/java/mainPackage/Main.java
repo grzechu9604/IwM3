@@ -13,8 +13,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import org.hl7.fhir.dstu3.model.Medication;
-import org.hl7.fhir.dstu3.model.MedicationStatement;
 import proxy.*;
 
 import java.time.LocalDate;
@@ -69,7 +67,7 @@ public class Main extends Application {
         dataPatient.clear();
         //ADD EXAMPLE OF PATIENT
         //#BEGIN
-        dataPatient.add(hsp.getPatientProxyById("123"));
+        //dataPatient.add(hsp.getPatientProxyById("123"));
         //#END
         dataPatient.addAll(pList);
         tablePatient.setItems(dataPatient);
@@ -80,7 +78,7 @@ public class Main extends Application {
         dataPatient.clear();
         //ADD EXAMPLE OF PATIENT
         //#BEGIN
-        dataPatient.add(hsp.getPatientProxyById("123"));
+        //dataPatient.add(hsp.getPatientProxyById("123"));
         //#END
         dataPatient.addAll(pList);
         tablePatient.setItems(dataPatient);

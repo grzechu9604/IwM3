@@ -1,6 +1,7 @@
 package proxy;
 
-import org.hl7.fhir.dstu3.model.*;
+
+import ca.uhn.fhir.model.dstu2.resource.*;
 
 public class MedicationStatementProxy {
     private MedicationStatement medicationStatement;
@@ -25,7 +26,7 @@ public class MedicationStatementProxy {
     public String getActivity() {
         try {
             if (medicationStatement.getStatus() != null)
-                return medicationStatement.getStatus().getDisplay().toString();
+                return medicationStatement.getStatus().toString();
         }catch (Exception e){
             return "";
         }
@@ -35,7 +36,7 @@ public class MedicationStatementProxy {
     public String getMedicationName() {
         try{
         if (medicationStatement.getMedication() != null)
-            return ((CodeableConcept)medicationStatement.getMedication()).getText().toString();
+            return "";// ((CodeableConcept)medicationStatement.getMedication()).getText().toString();
         }catch (Exception e){
             return "";
         }
@@ -52,8 +53,8 @@ public class MedicationStatementProxy {
     }
     public String getTaken() {
         try{
-        if (medicationStatement.getTaken() != null)
-            return medicationStatement.getTaken().getDisplay().toString();
+        if (medicationStatement.getWasNotTaken() != null)
+            return medicationStatement.getWasNotTaken().toString();
         }catch (Exception e){
             return "";
         }

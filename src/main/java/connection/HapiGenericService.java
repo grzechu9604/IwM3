@@ -1,6 +1,6 @@
 package connection;
 
-import org.hl7.fhir.dstu3.model.*;
+import ca.uhn.fhir.model.dstu2.resource.*;
 import ca.uhn.fhir.rest.gclient.ICriterion;
 import ca.uhn.fhir.rest.gclient.StringClientParam;
 import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
@@ -54,8 +54,8 @@ public class HapiGenericService<E extends BaseResource> {
             IBaseBundle bundle = hs.getClient()
                     .search()
                     .forResource(type)
-                    .where(criterion)
-                    .count(maxResultsAmount)
+                    //.where(criterion)
+                    //.count(maxResultsAmount)
                     .execute();
             ((Bundle) bundle).getEntry().forEach(b -> list.add((E) b.getResource()));
         }

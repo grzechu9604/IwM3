@@ -1,6 +1,6 @@
 package proxy;
 
-import org.hl7.fhir.dstu3.model.*;
+import ca.uhn.fhir.model.dstu2.resource.*;
 
 public class MedicationProxy {
     private Medication medication;
@@ -20,7 +20,7 @@ public class MedicationProxy {
 
     public String getProducer() {
         try {
-            return medication.getManufacturer().getDisplay();
+            return medication.getManufacturer().getDisplay().getValueNotNull();
         } catch (Exception e) {
             return "";
         }
@@ -28,7 +28,7 @@ public class MedicationProxy {
 
     public String getForm() {
         try {
-            return medication.getForm().getText();
+            return "";//medication.get getForm().getText();
         } catch (Exception e) {
             return "";
         }
@@ -36,7 +36,7 @@ public class MedicationProxy {
 
     public boolean getIsOverTheCounter() {
         try {
-            return medication.getIsOverTheCounter();
+            return false; //medication.is getIsOverTheCounter();
         } catch (Exception e) {
             return false;
         }
