@@ -28,7 +28,7 @@ public class MedicationProxy {
 
     public String getForm() {
         try {
-            return "";//medication.get getForm().getText();
+            return medication.getProduct().getForm().getText();
         } catch (Exception e) {
             return "";
         }

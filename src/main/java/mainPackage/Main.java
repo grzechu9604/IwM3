@@ -286,8 +286,8 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent e) {
                 if (checkInDatePickerFrom != null && checkInDatePickerTo != null && !helperId.isEmpty() ) {
-                    updateObservationList(java.sql.Date.valueOf(String.valueOf(checkInDatePickerFrom)),
-                            java.sql.Date.valueOf(String.valueOf(checkInDatePickerTo)), helperId, hsp);
+                    updateObservationList(java.sql.Date.valueOf(String.valueOf(checkInDatePickerFrom.getValue())),
+                            java.sql.Date.valueOf(String.valueOf(checkInDatePickerTo.getValue())), helperId, hsp);
                 } else {
                     dataObservation.clear();
                     if(!helperId.isEmpty()) {

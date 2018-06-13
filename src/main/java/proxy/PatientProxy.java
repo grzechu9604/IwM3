@@ -44,14 +44,11 @@ public class PatientProxy {
     }
 
     private String setLastNamesFromPatient() {
-        StringBuilder lastNamesFromPatientBuilder = new StringBuilder();
         try {
-            lastNamesFromPatientBuilder.append(patient.getName().get(0).getFamily());
+            return  patient.getName().get(0).getFamily().get(0).getValueNotNull();
         } catch (Exception e) {
-            return "";
+            return  "";
         }
-
-        return lastNamesFromPatientBuilder.toString().trim();
     }
 
     public String getLastNames() {
@@ -64,17 +61,12 @@ public class PatientProxy {
 
     @org.jetbrains.annotations.NotNull
     private String setNamesFromPatient() {
-        StringBuilder namesFromPatientBuilder = new StringBuilder();
-
-       /* try {
-            for (StringType lastNameFromPatient : patient.getName().get(0).getGiven()) {
-                namesFromPatientBuilder.append(" ").append(lastNameFromPatient.getValueNotNull());
-            }
-        } catch (Exception e) {*/
+        try {
+            return  patient.getName().get(0).getGiven().get(0).getValueNotNull();
+        }
+        catch (Exception e) {
             return "";
-        //}
-
-        //return namesFromPatientBuilder.toString().trim();
+        }
     }
 
     public String getNames() {

@@ -1,6 +1,8 @@
 package proxy;
 
+import ca.uhn.fhir.model.dstu2.composite.QuantityDt;
 import ca.uhn.fhir.model.dstu2.resource.*;
+import ca.uhn.fhir.model.primitive.DateTimeDt;
 
 import java.util.Date;
 
@@ -17,11 +19,13 @@ public class ObservationProxy {
 
     ObservationProxy(Observation observation) {
         this.observation = observation;
+        this.observedValue = getObservedValue();
+        this.observationDescription = getObservationDescription();
     }
 
     public Date getObservationDate(){
         if (observation.getEffective() != null) {
-            return new Date();//((DateTimeType)observation.getEffective()).getValue();
+            return ((DateTimeDt)observation.getEffective()).getValue();//((DateTimeType)observation.getEffective()).getValue();
         }
         else {
             return null;
@@ -32,7 +36,7 @@ public class ObservationProxy {
         try {
             if (observationDateStr == null) {
                 if (observation.getEffective() != null) {
-                    observationDateStr = observation.getEffective().toString();// primitiveValue();
+                    observationDateStr = ((DateTimeDt)observation.getEffective()).getValue().toString();// primitiveValue();
                 }
                 else {
                     observationDateStr = "";
@@ -50,15 +54,21 @@ public class ObservationProxy {
             if (qdt != null && qdt.getValue() != null && qdt.getUnit() != null)
                 observedValue = qdt.getValue() + " " + qdt.getUnit();
             else*/
-                observedValue = "";
-        }
+           try {
+               observedValue = ((QuantityDt) observation.getValue()).getValue() + " " + ((QuantityDt) observation.getValue()).getUnit();
+           }
+           catch (Exception e)
+           {
+               observedValue = "";
+           }
+           }
         return observedValue;
     }
 
     public String getObservationDescription() {
         if (observationDescription == null) {
             try {
-                observationDescription = observation.getCode().getCoding().get(0).getDisplay();
+                observationDescription = observation.getCode().getText();
             } catch (Exception e) {
                 observationDescription = observation.getCode().getText();
             }

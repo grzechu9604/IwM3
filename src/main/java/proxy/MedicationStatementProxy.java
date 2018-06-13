@@ -1,6 +1,7 @@
 package proxy;
 
 
+import ca.uhn.fhir.model.dstu2.composite.CodeableConceptDt;
 import ca.uhn.fhir.model.dstu2.resource.*;
 
 public class MedicationStatementProxy {
@@ -36,7 +37,7 @@ public class MedicationStatementProxy {
     public String getMedicationName() {
         try{
         if (medicationStatement.getMedication() != null)
-            return "";// ((CodeableConcept)medicationStatement.getMedication()).getText().toString();
+            return ((CodeableConceptDt)medicationStatement.getMedication()).getText();
         }catch (Exception e){
             return "";
         }
