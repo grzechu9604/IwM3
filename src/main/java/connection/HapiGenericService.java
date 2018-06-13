@@ -54,8 +54,8 @@ public class HapiGenericService<E extends BaseResource> {
             IBaseBundle bundle = hs.getClient()
                     .search()
                     .forResource(type)
-                    //.where(criterion)
-                    //.count(maxResultsAmount)
+                    .where(criterion)
+                    .count(maxResultsAmount)
                     .execute();
             ((Bundle) bundle).getEntry().forEach(b -> list.add((E) b.getResource()));
         }

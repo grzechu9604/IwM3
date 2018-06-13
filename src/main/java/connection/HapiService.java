@@ -10,7 +10,7 @@ import java.net.SocketTimeoutException;
 import java.util.*;
 
 public class HapiService {
-    private static final String serverDomainURL = "http://test.fhir.org/r2/";
+    private static final String serverDomainURL = "http://hapi.fhir.org/baseDstu2";
     private IGenericClient client;
     private Map<Class, HapiGenericService> services;
 
